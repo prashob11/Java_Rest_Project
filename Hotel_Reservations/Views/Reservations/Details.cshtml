@@ -1,0 +1,181 @@
+﻿@model Reservations.Reservation
+
+@{
+    ViewBag.Title = "Customer Details";
+
+}
+    <h2>@ViewBag.Title</h2>
+    <h3>@ViewBag.Message</h3>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Reservation</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Country1.country1)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Country1.country1)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CreditCardType1.type)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CreditCardType1.type)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Region1.region1)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Region1.region1)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.RoomType1.roomType1)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.RoomType1.roomType1)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.numberOfGuests)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.numberOfGuests)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.numberOfRooms)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.numberOfRooms)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.checkin)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.checkin)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.checkout)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.checkout)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.firstName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.firstName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.lastName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.lastName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.streetNumber)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.streetNumber)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.streetName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.streetName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.city)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.city)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.postalCode)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.postalCode)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.phoneNumber)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.phoneNumber)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.emailAddress)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.emailAddress)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.nameOnTheCard)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.nameOnTheCard)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CreditCardnumber)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CreditCardnumber)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CreditCardExpDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CreditCardExpDate)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.reservationId }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>
