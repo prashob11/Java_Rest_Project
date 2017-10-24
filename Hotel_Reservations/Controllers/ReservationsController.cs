@@ -96,7 +96,9 @@ namespace Reservations
             if (ModelState.IsValid)
             {
                 db.Entry(reservation).State = EntityState.Modified;
+                db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
                 db.SaveChanges();
+                MakeReservations(reservation);                
                 return RedirectToAction("Index");
             }
             ViewBag.country = new SelectList(db.Countries, "countryId", "country1", reservation.country);
@@ -104,6 +106,43 @@ namespace Reservations
             ViewBag.region = new SelectList(db.Regions, "regionId", "region1", reservation.region);
             ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1", reservation.roomType);
             return View(reservation);
+        }
+
+        private void MakeReservations(Reservation reservation)
+        {
+            int reservationId = reservation.reservationId;
+            int numberOfRooms = reservation.numberOfRooms;
+            int roomType = reservation.roomType;
+
+            //select rooms that are not available
+            var reservedRooms = from rsv in db.Reservations
+                                join rr in db.ReservedRooms on rsv.reservationId equals rr.reservationId
+                                where rsv.checkin <= reservation.checkout && rsv.checkout >= reservation.checkin
+                                && rsv.roomType == roomType
+                                select new { rr.roomId };
+
+            //select rooms that are available
+            var availableRooms = db.Rooms.Where(room => room.type == roomType)
+                .Select(room => room.roomId).Except(reservedRooms.Select(rr => rr.roomId)).ToList();
+  
+
+            if (availableRooms.Count() < numberOfRooms)
+            {
+                throw new Exception("No available rooms for these dates");
+            }
+
+            //book available rooms
+            var are = availableRooms.GetEnumerator();
+            while (numberOfRooms-- > 0)
+            {
+                ReservedRoom rr = new ReservedRoom();
+                rr.reservationId = reservationId;
+                are.MoveNext();
+                rr.roomId = are.Current;
+                db.ReservedRooms.Add(rr);
+            }
+
+            db.SaveChanges();
         }
 
         // GET: Reservations/Delete/5
