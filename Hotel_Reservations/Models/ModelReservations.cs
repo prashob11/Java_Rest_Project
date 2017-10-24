@@ -12,16 +12,21 @@ namespace Reservations
         {
         }
 
+        public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<CreditCardType> CreditCardTypes { get; set; }
         public virtual DbSet<Region> Regions { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
+        public virtual DbSet<ReservedRoom> ReservedRooms { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<RoomType> RoomTypes { get; set; }
-        public virtual DbSet<ReservedRoom> ReservedRooms { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<City>()
+                .Property(e => e.city1)
+                .IsUnicode(false);
+
             modelBuilder.Entity<Country>()
                 .Property(e => e.country1)
                 .IsUnicode(false);
@@ -59,6 +64,12 @@ namespace Reservations
             modelBuilder.Entity<Region>()
                 .Property(e => e.region1)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<Region>()
+                .HasMany(e => e.Cities)
+                .WithRequired(e => e.Region1)
+                .HasForeignKey(e => e.region)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Region>()
                 .HasMany(e => e.Reservations)

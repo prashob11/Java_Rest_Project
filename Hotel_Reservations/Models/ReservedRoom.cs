@@ -15,6 +15,8 @@ namespace Reservations
 
         public int? roomId { get; set; }
 
+        public virtual Reservation Reservation { get; set; }
+
         public virtual Room Room { get; set; }
     }
 }
