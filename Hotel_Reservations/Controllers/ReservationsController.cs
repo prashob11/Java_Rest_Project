@@ -113,17 +113,9 @@ namespace Reservations
             int reservationId = reservation.reservationId;
             int numberOfRooms = reservation.numberOfRooms;
             int roomType = reservation.roomType;
-
-            //select rooms that are not available
-            var reservedRooms = from rsv in db.Reservations
-                                join rr in db.ReservedRooms on rsv.reservationId equals rr.reservationId
-                                where rsv.checkin <= reservation.checkout && rsv.checkout >= reservation.checkin
-                                && rsv.roomType == roomType
-                                select new { rr.roomId };
-
+            
             //select rooms that are available
-            var availableRooms = db.Rooms.Where(room => room.type == roomType)
-                .Select(room => room.roomId).Except(reservedRooms.Select(rr => rr.roomId)).ToList();
+            var availableRooms = Validators.ReservationDatesValidation.GetAvailableRooms(db, reservation.checkin, reservation.checkout, roomType);
   
 
             if (availableRooms.Count() < numberOfRooms)

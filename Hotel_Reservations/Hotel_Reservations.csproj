@@ -227,6 +227,7 @@
     <Compile Include="Validators\NumberOfGuestsValidation.cs" />
     <Compile Include="Validators\PostalValidation.cs" />
     <Compile Include="Validators\RegionValidation.cs" />
+    <Compile Include="Validators\ReservationDatesValidation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-lumen.css" />

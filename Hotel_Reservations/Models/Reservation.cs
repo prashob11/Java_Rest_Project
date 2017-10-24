@@ -28,6 +28,7 @@ namespace Reservations
         public DateTime checkin { get; set; }
 
         [Column(TypeName = "date")]
+        [Validators.ReservationDatesValidation]
         public DateTime checkout { get; set; }
 
         [Required]
