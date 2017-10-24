@@ -223,6 +223,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Validators\CreditCardValidation.cs" />
+    <Compile Include="Validators\NumberOfRoomsValidation.cs" />
+    <Compile Include="Validators\NumberOfGuestsValidation.cs" />
     <Compile Include="Validators\PostalValidation.cs" />
     <Compile Include="Validators\RegionValidation.cs" />
   </ItemGroup>

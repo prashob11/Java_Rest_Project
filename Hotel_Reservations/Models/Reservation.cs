@@ -16,8 +16,10 @@ namespace Reservations
 
         public int reservationId { get; set; }
 
+        [Validators.NumberOfGuestsValidation]
         public int numberOfGuests { get; set; }
 
+        [Validators.NumberOfRoomsValidation]
         public int numberOfRooms { get; set; }
 
         public int roomType { get; set; }

@@ -57,6 +57,7 @@ namespace Reservations
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
                 return RedirectToAction("Index");
+                
             }
 
             ViewBag.country = new SelectList(db.Countries, "countryId", "country1", reservation.country);
