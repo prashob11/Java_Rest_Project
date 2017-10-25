@@ -8,10 +8,18 @@ namespace Reservations
 
     public partial class Reservation
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Reservation()
+        {
+            ReservedRooms = new HashSet<ReservedRoom>();
+        }
+
         public int reservationId { get; set; }
 
+        [Validators.NumberOfGuestsValidation]
         public int numberOfGuests { get; set; }
 
+        [Validators.NumberOfRoomsValidation]
         public int numberOfRooms { get; set; }
 
         public int roomType { get; set; }
@@ -20,6 +28,7 @@ namespace Reservations
         public DateTime checkin { get; set; }
 
         [Column(TypeName = "date")]
+        [Validators.ReservationDatesValidation]
         public DateTime checkout { get; set; }
 
         [Required]
@@ -86,5 +95,8 @@ namespace Reservations
         public virtual Region Region1 { get; set; }
 
         public virtual RoomType RoomType1 { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReservedRoom> ReservedRooms { get; set; }
     }
 }

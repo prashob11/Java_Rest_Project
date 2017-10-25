@@ -11,9 +11,11 @@ namespace Reservations
         [Key]
         public int rrId { get; set; }
 
-        public int? reservationId { get; set; }
+        public int reservationId { get; set; }
 
-        public int? roomId { get; set; }
+        public int roomId { get; set; }
+
+        public virtual Reservation Reservation { get; set; }
 
         public virtual Room Room { get; set; }
     }
