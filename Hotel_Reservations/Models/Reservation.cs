@@ -25,9 +25,11 @@ namespace Reservations
         public int roomType { get; set; }
 
         [Column(TypeName = "date")]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime checkin { get; set; }
 
         [Column(TypeName = "date")]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
         [Validators.ReservationDatesValidation]
         public DateTime checkout { get; set; }
 
@@ -86,6 +88,8 @@ namespace Reservations
         public int CreditCardType { get; set; }
 
         [Column(TypeName = "date")]
+        [Validators.CreditCardExpDateValidation]
+        [DisplayFormat(DataFormatString = @"{0:MM\/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CreditCardExpDate { get; set; }
 
         public virtual Country Country1 { get; set; }
