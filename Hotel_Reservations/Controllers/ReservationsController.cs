@@ -56,6 +56,7 @@ namespace Reservations
             {
                 db.Reservations.Add(reservation);
                 db.SaveChanges();
+                MakeReservations(reservation);
                 return RedirectToAction("Index");
                 
             }
