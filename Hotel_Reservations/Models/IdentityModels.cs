@@ -21,7 +21,7 @@ namespace Hotel_Reservations.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("ModelReservations", throwIfV1Schema: false)
         {
         }
 
