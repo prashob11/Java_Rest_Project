@@ -40,6 +40,24 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
+
     @RenderSection("scripts", required: false)
+
+
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $('#checkin, #checkout').datepicker({
+                    dateFormat: "dd/M/yy",
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: "-0:+1"
+                });
+            });        
+    </script>
 </body>
 </html>

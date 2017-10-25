@@ -26,6 +26,13 @@ namespace Hotel_Reservations
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-lumen.css",
                       "~/Content/site.css"));
+
+
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+                    "~/Scripts/jquery-ui-{version}.js"));
+
+            bundles.Add(new StyleBundle("~/Content/cssjqryUi").Include(
+                    "~/Content/themes/base/jquery-ui.css"));
         }
     }
 }
