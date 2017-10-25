@@ -11,6 +11,7 @@ namespace Reservations
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Region()
         {
+            Cities = new HashSet<City>();
             Reservations = new HashSet<Reservation>();
         }
 
@@ -22,6 +23,9 @@ namespace Reservations
         public string region1 { get; set; }
 
         public int country { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<City> Cities { get; set; }
 
         public virtual Country Country1 { get; set; }
 
