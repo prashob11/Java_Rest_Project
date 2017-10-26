@@ -5,6 +5,7 @@
     ViewBag.Title = "Book Hotels at Amazing Prices!!";
 }
 
+
 <h2>@ViewBag.Title</h2>
 <h3>@ViewBag.Message</h3>
 
@@ -17,10 +18,10 @@
     <title>Create</title>
 </head>
 <body>
-    @using (Html.BeginForm()) 
+    @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        
+
         <div class="form-horizontal">
             <h4>Make a New Reservation</h4>
             <hr />
