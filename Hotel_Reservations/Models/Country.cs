@@ -20,6 +20,7 @@ namespace Reservations
         [Column("country")]
         [Required]
         [StringLength(50)]
+        [Display(Name = "Country")]
         public string country1 { get; set; }
 
         public string postalPattern { get; set; }
