@@ -172,5 +172,30 @@ namespace Reservations
             }
             base.Dispose(disposing);
         }
+
+        [HttpPost]
+        public ActionResult GetRegions(string countryId)
+        {
+
+            List<SelectListItem> regions = new List<SelectListItem>();
+            int cId = Convert.ToInt32(countryId);
+            db.Regions.Where(r => r.country == cId).ToList().ForEach(r =>
+            {
+                regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
+            });
+
+            return Json(regions, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult GetCities(string regionId)
+        {
+
+            int rId = Convert.ToInt32(regionId);
+            List<string> cities = db.Cities.Where(c => c.region == rId).Select(c => c.city1).ToList();
+
+
+            return Json(cities, JsonRequestBehavior.AllowGet);
+        }
     }
 }

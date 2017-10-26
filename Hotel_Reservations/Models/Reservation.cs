@@ -25,11 +25,11 @@ namespace Reservations
         public int roomType { get; set; }
 
         [Column(TypeName = "date")]
-        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime checkin { get; set; }
 
         [Column(TypeName = "date")]
-        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = false)]
         [Validators.ReservationDatesValidation]
         public DateTime checkout { get; set; }
 
