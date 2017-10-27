@@ -14,41 +14,40 @@ namespace Reservations
             ReservedRooms = new HashSet<ReservedRoom>();
         }
 
-        [Display(Name = "Reservation Number")]
         public int reservationId { get; set; }
 
         [Validators.NumberOfGuestsValidation]
-        [Display(Name = "Number of Guests")]
+        [Display(Name = "Number Of Guests")]
         public int numberOfGuests { get; set; }
 
         [Validators.NumberOfRoomsValidation]
-        [Display(Name = "Number of Rooms")]
+        [Display(Name = "Number Of Rooms")]
         public int numberOfRooms { get; set; }
 
         [Display(Name = "Room Type")]
         public int roomType { get; set; }
 
         [Column(TypeName = "date")]
-        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Check-In")]
+        [Display(Name = "Check-In Date")]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime checkin { get; set; }
 
         [Column(TypeName = "date")]
-        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Check-Out Date")]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = false)]
         [Validators.ReservationDatesValidation]
-        [Display(Name = "Check-Out")]
         public DateTime checkout { get; set; }
 
         [Required]
         [StringLength(255)]
-        [RegularExpression(@"^[^;:!@#$%\^*+?\\/<>1234567890]*$", ErrorMessage = @"First Name should not contain the following characters: ;:!@#$%^*+?\/<>1234567890")]
         [Display(Name = "First Name")]
+        [RegularExpression(@"^[^;:!@#$%\^*+?\\/<>1234567890]*$", ErrorMessage = @"First Name should not contain the following characters: ;:!@#$%^*+?\/<>1234567890")]
         public string firstName { get; set; }
 
         [Required]
         [StringLength(255)]
-        [RegularExpression(@"^[^;:!@#$%\^*+?\\/<>1234567890]*$", ErrorMessage = @"Last Name should not contain the following characters: ;:!@#$%^*+?\/<>1234567890")]
         [Display(Name = "Last Name")]
+        [RegularExpression(@"^[^;:!@#$%\^*+?\\/<>1234567890]*$", ErrorMessage = @"Last Name should not contain the following characters: ;:!@#$%^*+?\/<>1234567890")]
         public string lastName { get; set; }
 
         [Required]
@@ -63,12 +62,12 @@ namespace Reservations
 
         [Required]
         [StringLength(255)]
-        [RegularExpression(@"^[^;:!@#$%\^*+?\\/<>1234567890]*$", ErrorMessage = @"City should not contain the following characters: ;:!@#$%^*+?\/<>1234567890")]
         [Display(Name = "City")]
+        [RegularExpression(@"^[^;:!@#$%\^*+?\\/<>1234567890]*$", ErrorMessage = @"City should not contain the following characters: ;:!@#$%^*+?\/<>1234567890")]
         public string city { get; set; }
 
         [Validators.RegionValidation]
-        [Display(Name = "Region")]
+        [Display(Name = "Province/State")]
         public int region { get; set; }
 
         [Display(Name = "Country")]
@@ -76,13 +75,13 @@ namespace Reservations
 
         [Required]
         [Validators.PostalValidation]
-        [Display(Name = "Postal Code")]
+        [Display(Name = "Zip/Postal Code")]
         public string postalCode { get; set; }
 
         [Required]
         [StringLength(20)]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-]?([0-9]{3})[-]?([0-9]{4})$", ErrorMessage = "Phone number is not valid")]
         [Display(Name = "Phone Number")]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-]?([0-9]{3})[-]?([0-9]{4})$", ErrorMessage = "Phone number is not valid")]
         public string phoneNumber { get; set; }
 
         [Required]
@@ -94,7 +93,7 @@ namespace Reservations
         [Required]
         [StringLength(50)]
         [RegularExpression(@"^[^;:!@#$%\^*+?\\/<>1234567890]*$", ErrorMessage = @"Credit card holder's name should not contain the following characters: ;:!@#$%^*+?\/<>1234567890")]
-        [Display(Name = "Name as it appears on the Card")]
+        [Display(Name = "Name on the Card")]
         public string nameOnTheCard { get; set; }
 
         [Required]
@@ -108,16 +107,20 @@ namespace Reservations
 
         [Column(TypeName = "date")]
         [Validators.CreditCardExpDateValidation]
+        [Display(Name = "Expiry Date")]
         [DisplayFormat(DataFormatString = @"{0:MM\/yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Credit Card Expiry Date")]
         public DateTime CreditCardExpDate { get; set; }
+
 
         public virtual Country Country1 { get; set; }
 
+
         public virtual CreditCardType CreditCardType1 { get; set; }
+
 
         public virtual Region Region1 { get; set; }
 
+ 
         public virtual RoomType RoomType1 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

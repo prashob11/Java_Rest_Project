@@ -16,6 +16,11 @@ namespace Reservations.Validators
             ModelReservations m = new ModelReservations();
 
             int numberOfGuests = Convert.ToInt32(value.ToString());
+            if (numberOfGuests < 1)
+            {
+                return new ValidationResult("At least 1 guest should be selected");
+            }
+
             int roomTypeSelected = Convert.ToInt32(validationContext.ObjectType.GetProperty("roomType").GetValue(validationContext.ObjectInstance, null).ToString());
 
             var rooms = from r in m.Rooms

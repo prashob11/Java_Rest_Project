@@ -43,7 +43,7 @@
             </div>
     
             <div class="form-group">
-                @Html.LabelFor(model => model.roomType, "roomType", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.roomType, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DropDownList("roomType", null, htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.roomType, "", new { @class = "text-danger" })
@@ -107,7 +107,7 @@
             </div>
     
             <div class="form-group">
-                @Html.LabelFor(model => model.region, "region", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.region, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DropDownList("region", null, htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.region, "", new { @class = "text-danger" })
@@ -115,7 +115,7 @@
             </div>
     
             <div class="form-group">
-                @Html.LabelFor(model => model.country, "country", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.country, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DropDownList("country", null, htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.country, "", new { @class = "text-danger" })
@@ -163,7 +163,7 @@
             </div>
     
             <div class="form-group">
-                @Html.LabelFor(model => model.CreditCardType, "CreditCardType", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.CreditCardType, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.RadioButtonFor(m => m.CreditCardType, 1) @Html.Label("Visa")
                     @Html.RadioButtonFor(m => m.CreditCardType, 2) @Html.Label("Mastercard")

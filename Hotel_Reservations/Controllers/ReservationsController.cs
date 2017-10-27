@@ -159,6 +159,7 @@ namespace Reservations
         public ActionResult DeleteConfirmed(int id)
         {
             Reservation reservation = db.Reservations.Find(id);
+            db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
             db.Reservations.Remove(reservation);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -171,6 +172,48 @@ namespace Reservations
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [HttpPost]
+        public ActionResult GetRegions(string countryId, string regionId)
+        {
+
+            List<SelectListItem> regions = new List<SelectListItem>();
+            int cId = Convert.ToInt32(countryId);
+            int rId = Convert.ToInt32(regionId);
+            if (regionId != null)
+            {//make a list where selected region is first item                
+                db.Regions.Where(r => r.regionId == rId).ToList().ForEach(r =>
+                {
+                    regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
+                });
+
+                db.Regions.Where(r => r.country == cId).Where(r => r.regionId != rId).ToList().ForEach(r =>
+                {
+                    regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
+                });
+            }
+            else
+            {//list all regions
+                db.Regions.Where(r => r.country == cId).Where(r => r.regionId != rId).ToList().ForEach(r =>
+                {
+                    regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
+                });
+            }
+
+
+            return Json(regions, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult GetCities(string regionId)
+        {
+
+            int rId = Convert.ToInt32(regionId);
+            List<string> cities = db.Cities.Where(c => c.region == rId).Select(c => c.city1).ToList();
+
+
+            return Json(cities, JsonRequestBehavior.AllowGet);
         }
     }
 }
