@@ -42,6 +42,7 @@ namespace Reservations
             ViewBag.CreditCardType = new SelectList(db.CreditCardTypes, "cctId", "type");
             ViewBag.region = new SelectList(db.Regions, "regionId", "region1");
             ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1");
+            ViewBag.city = new SelectList(db.Cities, "cityId", "city1");
             return View();
         }
 
@@ -65,6 +66,7 @@ namespace Reservations
             ViewBag.CreditCardType = new SelectList(db.CreditCardTypes, "cctId", "type", reservation.CreditCardType);
             ViewBag.region = new SelectList(db.Regions, "regionId", "region1", reservation.region);
             ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1", reservation.roomType);
+            ViewBag.city = new SelectList(db.Cities, "cityId", "city1",reservation.city);
             return View(reservation);
         }
 
@@ -84,6 +86,7 @@ namespace Reservations
             ViewBag.CreditCardType = new SelectList(db.CreditCardTypes, "cctId", "type", reservation.CreditCardType);
             ViewBag.region = new SelectList(db.Regions, "regionId", "region1", reservation.region);
             ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1", reservation.roomType);
+            ViewBag.city = new SelectList(db.Cities, "cityId", "city1", reservation.city);
             return View(reservation);
         }
 
@@ -106,6 +109,7 @@ namespace Reservations
             ViewBag.CreditCardType = new SelectList(db.CreditCardTypes, "cctId", "type", reservation.CreditCardType);
             ViewBag.region = new SelectList(db.Regions, "regionId", "region1", reservation.region);
             ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1", reservation.roomType);
+            ViewBag.city = new SelectList(db.Cities, "cityId", "city1", reservation.city);
             return View(reservation);
         }
 
