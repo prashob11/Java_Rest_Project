@@ -174,15 +174,32 @@ namespace Reservations
         }
 
         [HttpPost]
-        public ActionResult GetRegions(string countryId)
+        public ActionResult GetRegions(string countryId, string regionId)
         {
 
             List<SelectListItem> regions = new List<SelectListItem>();
             int cId = Convert.ToInt32(countryId);
-            db.Regions.Where(r => r.country == cId).ToList().ForEach(r =>
-            {
-                regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
-            });
+            int rId = Convert.ToInt32(regionId);
+            if (regionId != null)
+            {//make a list where selected region is first item                
+                db.Regions.Where(r => r.regionId == rId).ToList().ForEach(r =>
+                {
+                    regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
+                });
+
+                db.Regions.Where(r => r.country == cId).Where(r => r.regionId != rId).ToList().ForEach(r =>
+                {
+                    regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
+                });
+            }
+            else
+            {//list all regions
+                db.Regions.Where(r => r.country == cId).Where(r => r.regionId != rId).ToList().ForEach(r =>
+                {
+                    regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
+                });
+            }
+
 
             return Json(regions, JsonRequestBehavior.AllowGet);
         }

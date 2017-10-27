@@ -66,12 +66,11 @@
             $.ajax({
                 type: "post",
                 url: "/Reservations/GetRegions",
-                data: { countryId: $('#country').val() },
+                data: { countryId: $('#country').val(), regionId: $('#region').val() },
                 datatype: "json",
                 traditional: true,
                 success: function (data) {
                     var region = "<select id='region'>";
-                    region = region + '<option value="">--Select--</option>';
                     for (var i = 0; i < data.length; i++) {
                         region = region + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
                     }
@@ -82,7 +81,7 @@
         };
         
         $(document).ready(getRegions);
-
+        
         $(document).ready(function () {
             $('#country').change(getRegions)
         });
@@ -92,19 +91,19 @@
 
     <script type="text/javascript">
 
-$(document).ready(function () {
-    $("#city").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: "/Reservations/GetCities",
-                type: "post",
-                datatype: "json",
-                data: { regionId: $('#region').val() },
-                success: function (data) {
-                    response($.map(data, function (val, item) {
-                        return {
-                            label: val,
-                            value: val,
+    $(document).ready(function () {
+        $("#city").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Reservations/GetCities",
+                    type: "post",
+                    datatype: "json",
+                    data: { regionId: $('#region').val() },
+                    success: function (data) {
+                        response($.map(data, function (val, item) {
+                            return {
+                                label: val,
+                               value: val,
                         }
                     }))
                 }
