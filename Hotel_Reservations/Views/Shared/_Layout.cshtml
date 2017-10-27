@@ -90,28 +90,27 @@
 
 
     <script type="text/javascript">
-
-    $(document).ready(function () {
-        $("#city").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: "/Reservations/GetCities",
-                    type: "post",
-                    datatype: "json",
-                    data: { regionId: $('#region').val() },
-                    success: function (data) {
-                        response($.map(data, function (val, item) {
-                            return {
-                                label: val,
-                               value: val,
+        $(document).ready(function () {
+            $("#city").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Reservations/GetCities",
+                        type: "post",
+                        datatype: "json",
+                        data: { regionId: $('#region').val(), prefix: request.term },
+                        success: function (data) {
+                            response($.map(data, function (val, item) {
+                                return {
+                                    label: val,
+                                    value: val,
+                                }
+                            }))
                         }
-                    }))
+                    })
                 }
-            })
-        }
-    });
-});
-    </script>  >
+            });
+        });
+    </script>  
 
 
 </body>
