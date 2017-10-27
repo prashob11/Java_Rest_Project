@@ -20,6 +20,7 @@ namespace Reservations
 
         [Required]
         [StringLength(50)]
+        [Display(Name = "Credit Card Type")]
         public string type { get; set; }
 
         [StringLength(50)]

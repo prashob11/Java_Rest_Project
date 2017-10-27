@@ -21,6 +21,7 @@ namespace Reservations
         [Column("roomType")]
         [Required]
         [StringLength(50)]
+        [Display(Name = "Room Type")]
         public string roomType1 { get; set; }
 
         public int maxGuests { get; set; }
