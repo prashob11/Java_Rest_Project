@@ -20,6 +20,7 @@ namespace Reservations
         [Column("region")]
         [Required]
         [StringLength(100)]
+        [Display(Name = "Province/State")]
         public string region1 { get; set; }
 
         public int country { get; set; }
