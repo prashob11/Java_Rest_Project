@@ -159,6 +159,7 @@ namespace Reservations
         public ActionResult DeleteConfirmed(int id)
         {
             Reservation reservation = db.Reservations.Find(id);
+            db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
             db.Reservations.Remove(reservation);
             db.SaveChanges();
             return RedirectToAction("Index");
