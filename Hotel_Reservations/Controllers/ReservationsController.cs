@@ -187,19 +187,28 @@ namespace Reservations
             int rId = Convert.ToInt32(regionId);
             if (regionId != null)
             {//make a list where selected region is first item                
-                db.Regions.Where(r => r.regionId == rId).ToList().ForEach(r =>
+                db.Regions.Where(r => r.regionId == rId)
+                    .ToList()
+                    .ForEach(r =>
                 {
                     regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
                 });
 
-                db.Regions.Where(r => r.country == cId).Where(r => r.regionId != rId).ToList().ForEach(r =>
+                db.Regions.Where(r => r.country == cId)
+                    .Where(r => r.regionId != rId)
+                    .ToList()
+                    .ForEach(r =>
                 {
                     regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
                 });
             }
             else
             {//list all regions
-                db.Regions.Where(r => r.country == cId).Where(r => r.regionId != rId).ToList().ForEach(r =>
+                db.Regions
+                    .Where(r => r.country == cId)
+                    .Where(r => r.regionId != rId)
+                    .ToList()
+                    .ForEach(r =>
                 {
                     regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
                 });
@@ -210,11 +219,27 @@ namespace Reservations
         }
 
         [HttpPost]
-        public ActionResult GetCities(string regionId)
+        public ActionResult GetCities(string regionId, string prefix)
         {
 
             int rId = Convert.ToInt32(regionId);
-            List<string> cities = db.Cities.Where(c => c.region == rId).Select(c => c.city1).ToList();
+            List<string> cities;
+            if (String.IsNullOrEmpty(prefix))
+            {
+                cities = db.Cities
+                    .Where(c => c.region == rId)
+                    .Select(c => c.city1)
+                    .ToList();
+            }
+            else
+            {
+                cities = db.Cities
+                    .Where(c => c.region == rId)
+                    .Select(c => c.city1)
+                    .Where(c => c.ToLower().StartsWith(prefix))
+                    .ToList();
+            }
+            
 
 
             return Json(cities, JsonRequestBehavior.AllowGet);
