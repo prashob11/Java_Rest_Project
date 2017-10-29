@@ -6,9 +6,36 @@
     <title>@ViewBag.Title | Book Rooms At Amazing Prices!</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <style>
+        /* Sticky footer styles
+-------------------------------------------------- */
+        html {
+            position: relative;
+            min-height: 100%;
+        }
 
+        body {
+            /* Margin bottom by footer height */
+            background-image: url(../../Content/images/background_corpo_piscina_hotel_sunrise.jpg);
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            margin-bottom: 60px;
+            color: #ffffff;
+
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            /* Set the fixed height of the footer here */
+            height: 60px;
+            color: #ffffff;
+        }
+    </style>
 </head>
-<body>
+<body >
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -32,8 +59,8 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
+       
+        <footer class="footer">
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
