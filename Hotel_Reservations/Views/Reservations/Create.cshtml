@@ -16,11 +16,11 @@
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
-            <h2 style="color:#ffffff"><b>Make a New Reservation</b></h2>
+            <h1 style="color:#ffffff">Make a New Reservation</h1>
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <hr/>
-            <h3 style="color:#ffffff"><b>Reservation Information</b></h3>
+            <h3 style="color:#ffffff">Reservation Information</h3>
             <div class="form-group">
                 @Html.LabelFor(model => model.checkin, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -59,7 +59,7 @@
     
 
             <hr/>
-            <h3 style="color:#ffffff"><b>Contact Information</b></h3>
+            <h3 style="color:#ffffff">Contact Information</h3>
             <div class="form-group">
                 @Html.LabelFor(model => model.lastName, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -135,7 +135,7 @@
     
 
             <hr/>
-            <h3 style="color:#ffffff"><b>Credit Card Information</b></h3>
+            <h3 style="color:#ffffff">Credit Card Information</h3>
             <div class="form-group">
                 @Html.LabelFor(model => model.CreditCardType, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -176,7 +176,7 @@
     }
     
     <div>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to List", "Index", null, new { Style = "color:#ffffff" })
     </div>
 
     @section Scripts {
