@@ -14,6 +14,7 @@ namespace Reservations
         private ModelReservations db = new ModelReservations();
 
         // GET: Reservations
+        [Authorize]
         public ActionResult Index()
         {
             var reservations = db.Reservations.Include(r => r.Country1).Include(r => r.CreditCardType1).Include(r => r.Region1).Include(r => r.RoomType1);
@@ -21,6 +22,7 @@ namespace Reservations
         }
 
         // GET: Reservations/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,6 +38,7 @@ namespace Reservations
         }
 
         // GET: Reservations/Create
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.country = new SelectList(db.Countries, "countryId", "country1");
@@ -51,6 +54,7 @@ namespace Reservations
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create([Bind(Include = "reservationId,numberOfGuests,numberOfRooms,roomType,checkin,checkout,firstName,lastName,streetNumber,streetName,city,region,country,postalCode,phoneNumber,emailAddress,nameOnTheCard,CreditCardnumber,CreditCardType,CreditCardExpDate")] Reservation reservation)
         {
             if (ModelState.IsValid)
@@ -71,6 +75,7 @@ namespace Reservations
         }
 
         // GET: Reservations/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -95,6 +100,7 @@ namespace Reservations
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit([Bind(Include = "reservationId,numberOfGuests,numberOfRooms,roomType,checkin,checkout,firstName,lastName,streetNumber,streetName,city,region,country,postalCode,phoneNumber,emailAddress,nameOnTheCard,CreditCardnumber,CreditCardType,CreditCardExpDate")] Reservation reservation)
         {
             if (ModelState.IsValid)
@@ -113,6 +119,7 @@ namespace Reservations
             return View(reservation);
         }
 
+        [Authorize]
         private void MakeReservations(Reservation reservation)
         {
             int reservationId = reservation.reservationId;
@@ -143,6 +150,7 @@ namespace Reservations
         }
 
         // GET: Reservations/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -160,6 +168,7 @@ namespace Reservations
         // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
             Reservation reservation = db.Reservations.Find(id);

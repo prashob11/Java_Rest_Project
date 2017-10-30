@@ -5,7 +5,7 @@
     ViewBag.Title = "Bookings Summary";
     
 }
-<h2>@ViewBag.Title</h2>
+<h1 style="color:#ffffff">@ViewBag.Title</h1>
 <h3>@ViewBag.Message</h3>
 
 <!DOCTYPE html>
@@ -17,10 +17,10 @@
 </head>
 <body>
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Create New", "Create",null, new { Style = "color:#ffffff" })
     </p>
-    <table class="table table-bordered table-hover">
-        <tr>
+    <table class="table table-bordered ">
+        <tr style="font-size:large">
             <th>
                 @Html.DisplayNameFor(model => model.firstName)
 
@@ -43,7 +43,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.checkout)
             </th>
-        </tr>
+        </trstyle="font-size:medium">
     
     @foreach (var item in Model) {
         <tr>
@@ -69,9 +69,9 @@
                 @Html.DisplayFor(modelItem => item.checkout)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.reservationId }) |
-                @Html.ActionLink("Details", "Details", new { id=item.reservationId }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.reservationId })
+                @Html.ActionLink("Edit", "Edit", new { id=item.reservationId },new { Style = "color:#ffffff" }) |
+                @Html.ActionLink("Details", "Details", new { id=item.reservationId }, new { Style = "color:#ffffff" }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.reservationId }, new { Style = "color:#ffffff" })
             </td>
         </tr>
     }

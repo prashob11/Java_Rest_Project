@@ -37,7 +37,7 @@ namespace Reservations.Validators
             else
             {
                 return new ValidationResult(String.Format("Sorry, our hotel cannot accomodate {0} guests in {1} rooms" +
-                    ". We can accomodate up to {2} guests in the seleted room types only", 
+                    ". We can accomodate only up to {2} guests in the seleted room types", 
                     numberOfGuests, m.RoomTypes.Where(rt => rt.rtId == roomTypeSelected).First().roomType1, maxGuests));
             }
 
