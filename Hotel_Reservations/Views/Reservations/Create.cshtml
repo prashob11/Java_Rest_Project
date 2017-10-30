@@ -1,13 +1,6 @@
 ﻿@model Reservations.Reservation
 
-
-@{
-    ViewBag.Title = "Book our Hotel at Amazing Prices!";
-}
-
-
-<h2>@ViewBag.Title</h2>
-<h3>@ViewBag.Message</h3>
+<h2>@ViewBag.Message</h2>
 
 
 <!DOCTYPE html>
@@ -23,11 +16,11 @@
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
-            <h3>Make a New Reservation</h3>
+            <h2 style="color:#ffffff"><b>Make a New Reservation</b></h2>
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <hr/>
-            <h5><b>Reservation Information</b></h5>
+            <h3 style="color:#ffffff"><b>Reservation Information</b></h3>
             <div class="form-group">
                 @Html.LabelFor(model => model.checkin, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -66,7 +59,7 @@
     
 
             <hr/>
-            <h5><b>Contact Information</b></h5>
+            <h3 style="color:#ffffff"><b>Contact Information</b></h3>
             <div class="form-group">
                 @Html.LabelFor(model => model.lastName, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -142,7 +135,7 @@
     
 
             <hr/>
-            <h5><b>Credit Card Information</b></h5>
+            <h3 style="color:#ffffff"><b>Credit Card Information</b></h3>
             <div class="form-group">
                 @Html.LabelFor(model => model.CreditCardType, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
