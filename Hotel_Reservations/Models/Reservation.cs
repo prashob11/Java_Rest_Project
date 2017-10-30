@@ -6,6 +6,7 @@ namespace Reservations
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
     using System.Linq;
+    using System.Text;
 
     public partial class Reservation
     {
@@ -129,13 +130,18 @@ namespace Reservations
 
 
         [NotMapped]
+        [Display(Name = "Room Numbers")]
         public string RoomNumbers
         {
             get
             {
                 ModelReservations db = new ModelReservations();
+                var reservedRooms = this.ReservedRooms.Select(rr => rr.roomId).ToList();
+                var roomNumbers = db.Rooms.Where(r => reservedRooms.Contains(r.roomId))
+                    .Select(r => r.roomNumber)
+                    .ToList();
 
-                return this.ReservedRooms.ToList().First().roomId.ToString();
+                return String.Join(", ", roomNumbers); 
             }
         }
     }
