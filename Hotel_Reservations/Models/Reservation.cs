@@ -5,6 +5,7 @@ namespace Reservations
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Linq;
 
     public partial class Reservation
     {
@@ -125,5 +126,17 @@ namespace Reservations
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReservedRoom> ReservedRooms { get; set; }
+
+
+        [NotMapped]
+        public string RoomNumbers
+        {
+            get
+            {
+                ModelReservations db = new ModelReservations();
+
+                return this.ReservedRooms.ToList().First().roomId.ToString();
+            }
+        }
     }
 }
