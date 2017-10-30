@@ -169,14 +169,15 @@
     
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Submit" class="btn btn-default" />
+                    <input style="margin-right: 20px" type="submit" value="Submit" class="btn btn-default" onsubmit="alert('Reservation was created successfully')"/>
+                    <input type="reset" value="Clear Form" class="btn btn-default" />
                 </div>
             </div>
         </div>
     }
     
     <div>
-        @Html.ActionLink("Back to List", "Index", null, new { Style = "color:#ffffff" })
+        @Html.ActionLink("Back to Bookings Summary", "Index", null, new { Style = "color:#ffffff" })
     </div>
 
     @section Scripts {

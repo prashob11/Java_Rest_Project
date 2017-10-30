@@ -43,7 +43,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.checkout)
             </th>
-        </trstyle="font-size:medium">
+            <th>
+                @Html.DisplayNameFor(model => model.ReservedRooms)
+            </th>
+        </tr style="font-size:medium">
     
     @foreach (var item in Model) {
         <tr>
@@ -67,6 +70,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.checkout)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomNumbers)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.reservationId },new { Style = "color:#ffffff" }) |
