@@ -1,7 +1,9 @@
 ﻿@model Reservations.Reservation
 
 <h2>@ViewBag.Message</h2>
-
+@{ 
+    Reservations.Validators.ReservationDatesValidation.IsInEditMode = false;
+}
 
 <!DOCTYPE html>
 

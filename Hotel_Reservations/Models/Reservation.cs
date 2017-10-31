@@ -31,12 +31,12 @@ namespace Reservations
 
         [Column(TypeName = "date")]
         [Display(Name = "Check-In Date")]
-        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = @"{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime checkin { get; set; }
 
         [Column(TypeName = "date")]
         [Display(Name = "Check-Out Date")]
-        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = @"{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Validators.ReservationDatesValidation]
         public DateTime checkout { get; set; }
 
