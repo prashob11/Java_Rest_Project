@@ -127,7 +127,7 @@ namespace Reservations
             int roomType = reservation.roomType;
 
             //select rooms that are available
-            var availableRooms = Validators.ReservationDatesValidation.GetAvailableRooms(db, reservation.checkin, reservation.checkout, roomType);
+            var availableRooms = Validators.ReservationDatesValidation.GetAvailableRooms(db, reservation.checkin, reservation.checkout, roomType, reservationId);
 
 
             if (availableRooms.Count() < numberOfRooms)

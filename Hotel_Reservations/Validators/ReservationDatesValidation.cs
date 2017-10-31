@@ -8,7 +8,6 @@ namespace Reservations.Validators
 {
     public class ReservationDatesValidation : ValidationAttribute
     {
-        public static bool IsInEditMode { get; set; }
         /*
         * check if:
         * 1) checkout date is after checkin date
@@ -22,7 +21,7 @@ namespace Reservations.Validators
             string roomType = m.RoomTypes.Where(rt => rt.rtId == roomTypeSelected).First().roomType1;
             DateTime checkinSelected = (DateTime)validationContext.ObjectType.GetProperty("checkin").GetValue(validationContext.ObjectInstance, null);
             DateTime checkoutSelected = (DateTime)validationContext.ObjectType.GetProperty("checkout").GetValue(validationContext.ObjectInstance, null);
-
+            int reservationId = (int)validationContext.ObjectType.GetProperty("reservationId").GetValue(validationContext.ObjectInstance, null);
 
 
             //if (checkinSelected < DateTime.Now || checkoutSelected < DateTime.Now)
@@ -35,20 +34,7 @@ namespace Reservations.Validators
                 return new ValidationResult("Checkout date should be after checkin date");
             }
 
-
-            int roomsAvailableCount = 0;
-            //if we are in Edit mode then we should not exculde reserved rooms for the current reservation Id from available rooms
-            if (IsInEditMode)
-            {
-                int reservationId = (int)validationContext.ObjectType.GetProperty("reservationId").GetValue(validationContext.ObjectInstance, null);
-                roomsAvailableCount = GetAvailableRoomsInEditMode(m, checkinSelected, checkoutSelected, roomTypeSelected, reservationId).Count;
-
-            }
-            else
-            {
-                roomsAvailableCount = GetAvailableRooms(m, checkinSelected, checkoutSelected, roomTypeSelected).Count;
-            }
-            
+            int roomsAvailableCount =  GetAvailableRooms(m, checkinSelected, checkoutSelected, roomTypeSelected, reservationId).Count;
             
 
             if (roomsAvailableCount == 0)
@@ -67,22 +53,7 @@ namespace Reservations.Validators
 
         }
 
-        public static List<int> GetAvailableRooms(ModelReservations db, DateTime checkin, DateTime checkout, int roomType)
-        {
-            //select rooms that are not available
-            var reservedRooms = from rsv in db.Reservations
-                                join rr in db.ReservedRooms on rsv.reservationId equals rr.reservationId
-                                where rsv.checkin <= checkout && rsv.checkout >= checkin
-                                && rsv.roomType == roomType
-                                select new { rr.roomId };
-
-            //select rooms that are available
-            return db.Rooms.Where(room => room.type == roomType)
-                .Select(room => room.roomId).Except(reservedRooms.Select(rr => rr.roomId)).ToList();
-
-        }
-
-        private List<int> GetAvailableRoomsInEditMode(ModelReservations db, DateTime checkin, DateTime checkout, int roomType, int reservationId)
+        public static List<int> GetAvailableRooms(ModelReservations db, DateTime checkin, DateTime checkout, int roomType, int reservationId)
         {
             //select rooms that are not available
             var reservedRooms = from rsv in db.Reservations
@@ -97,5 +68,6 @@ namespace Reservations.Validators
                 .Select(room => room.roomId).Except(reservedRooms.Select(rr => rr.roomId)).ToList();
 
         }
+
     }
 }
