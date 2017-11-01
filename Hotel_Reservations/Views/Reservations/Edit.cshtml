@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Edit Customer Booking Details";
 }
-<h2>@ViewBag.Title</h2>
+<h1 style="color:#ffffff">@ViewBag.Title</h1>
 <h3>@ViewBag.Message</h3>
 
 <!DOCTYPE html>
@@ -20,12 +20,11 @@
         @Html.AntiForgeryToken()
         
         <div class="form-horizontal">
-            <h4>Reservation</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.reservationId)
-            <hr />
-            <h5><b>Reservation Information</b></h5>
+            
+            <h3 style="color:#ffffff">Reservation Information</h3>
             <div class="form-group">
                 @Html.LabelFor(model => model.checkin, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -64,7 +63,7 @@
 
 
             <hr />
-            <h5><b>Contact Information</b></h5>
+            <h3 Style = "color:#ffffff">Contact Information</h3>
             <div class="form-group">
                 @Html.LabelFor(model => model.lastName, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -140,7 +139,7 @@
 
 
             <hr />
-            <h5><b>Credit Card Information</b></h5>
+            <h3 Style = "color:#ffffff">Credit Card Information</h3>
             <div class="form-group">
                 @Html.LabelFor(model => model.CreditCardType, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -181,7 +180,7 @@
     }
     
     <div>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to List", "Index",null, new { Style = "color:#ffffff" })
     </div>
 
 </body>
