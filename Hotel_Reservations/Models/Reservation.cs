@@ -6,6 +6,7 @@ namespace Reservations
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
     using System.Linq;
+    using System.Text;
 
     public partial class Reservation
     {
@@ -30,12 +31,12 @@ namespace Reservations
 
         [Column(TypeName = "date")]
         [Display(Name = "Check-In Date")]
-        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = @"{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime checkin { get; set; }
 
         [Column(TypeName = "date")]
         [Display(Name = "Check-Out Date")]
-        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = @"{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Validators.ReservationDatesValidation]
         public DateTime checkout { get; set; }
 
@@ -129,13 +130,18 @@ namespace Reservations
 
 
         [NotMapped]
+        [Display(Name = "Room Numbers")]
         public string RoomNumbers
         {
             get
             {
                 ModelReservations db = new ModelReservations();
+                var reservedRooms = this.ReservedRooms.Select(rr => rr.roomId).ToList();
+                var roomNumbers = db.Rooms.Where(r => reservedRooms.Contains(r.roomId))
+                    .Select(r => r.roomNumber)
+                    .ToList();
 
-                return this.ReservedRooms.ToList().First().roomId.ToString();
+                return String.Join(", ", roomNumbers); 
             }
         }
     }

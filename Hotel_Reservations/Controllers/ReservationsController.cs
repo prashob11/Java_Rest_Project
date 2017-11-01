@@ -63,14 +63,14 @@ namespace Reservations
                 db.SaveChanges();
                 MakeReservations(reservation);
                 return RedirectToAction("Index");
-                
+
             }
 
             ViewBag.country = new SelectList(db.Countries, "countryId", "country1", reservation.country);
             ViewBag.CreditCardType = new SelectList(db.CreditCardTypes, "cctId", "type", reservation.CreditCardType);
             ViewBag.region = new SelectList(db.Regions, "regionId", "region1", reservation.region);
             ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1", reservation.roomType);
-            ViewBag.city = new SelectList(db.Cities, "cityId", "city1",reservation.city);
+            ViewBag.city = new SelectList(db.Cities, "cityId", "city1", reservation.city);
             return View(reservation);
         }
 
@@ -108,7 +108,7 @@ namespace Reservations
                 db.Entry(reservation).State = EntityState.Modified;
                 db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
                 db.SaveChanges();
-                MakeReservations(reservation);                
+                MakeReservations(reservation);
                 return RedirectToAction("Index");
             }
             ViewBag.country = new SelectList(db.Countries, "countryId", "country1", reservation.country);
@@ -125,10 +125,10 @@ namespace Reservations
             int reservationId = reservation.reservationId;
             int numberOfRooms = reservation.numberOfRooms;
             int roomType = reservation.roomType;
-            
+
             //select rooms that are available
-            var availableRooms = Validators.ReservationDatesValidation.GetAvailableRooms(db, reservation.checkin, reservation.checkout, roomType);
-  
+            var availableRooms = Validators.ReservationDatesValidation.GetAvailableRooms(db, reservation.checkin, reservation.checkout, roomType, reservationId);
+
 
             if (availableRooms.Count() < numberOfRooms)
             {
@@ -194,35 +194,31 @@ namespace Reservations
             List<SelectListItem> regions = new List<SelectListItem>();
             int cId = Convert.ToInt32(countryId);
             int rId = Convert.ToInt32(regionId);
+
+            //select all regions for the given country
+			db.Regions
+	             .Where(r => r.country == cId)
+	             .ToList()
+	             .ForEach(r =>
+	        {
+		         regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
+	        });
+
+            //if the region is already selected
             if (regionId != null)
-            {//make a list where selected region is first item                
-                db.Regions.Where(r => r.regionId == rId)
-                    .ToList()
-                    .ForEach(r =>
+            {
+                var sr = regions.Where(si => si.Value == regionId); 
+                /* 
+                 * if region with given regionId is in the list 
+                 * then move it in the beginning of the list (for Edit page)
+                 */
+                if (sr.Count() == 1)
                 {
-                    regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
-                });
-
-                db.Regions.Where(r => r.country == cId)
-                    .Where(r => r.regionId != rId)
-                    .ToList()
-                    .ForEach(r =>
-                {
-                    regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
-                });
+                    var region = sr.First();
+                    regions.Remove(region);
+                    regions.Insert(0, region);
+                }
             }
-            else
-            {//list all regions
-                db.Regions
-                    .Where(r => r.country == cId)
-                    .Where(r => r.regionId != rId)
-                    .ToList()
-                    .ForEach(r =>
-                {
-                    regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
-                });
-            }
-
 
             return Json(regions, JsonRequestBehavior.AllowGet);
         }
@@ -248,7 +244,7 @@ namespace Reservations
                     .Where(c => c.ToLower().StartsWith(prefix))
                     .ToList();
             }
-            
+
 
 
             return Json(cities, JsonRequestBehavior.AllowGet);
