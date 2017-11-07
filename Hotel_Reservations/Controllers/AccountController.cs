@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Hotel_Reservations.Models;
+using System.Net.Mail;
 
 namespace Hotel_Reservations.Controllers
 {
@@ -156,14 +157,24 @@ namespace Hotel_Reservations.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    var message = new MailMessage();
+                    string body = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
+                    message.To.Add(new MailAddress(user.Email));
+                    message.Subject = "Smutel: Thank you for registering with us!";
+                    message.Body = body;
+                    message.IsBodyHtml = true;
+                    using (var smtp = new SmtpClient())
+                    {
+                        await smtp.SendMailAsync(message);
+                        return RedirectToAction("CheckEmail");
 
-                    return RedirectToAction("Index", "Home");
+                    }
+                        
                 }
                 AddErrors(result);
             }
@@ -185,6 +196,12 @@ namespace Hotel_Reservations.Controllers
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
+        [AllowAnonymous]
+        public ActionResult CheckEmail()
+        {
+            return View();
+        }
+
         //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
@@ -200,6 +217,7 @@ namespace Hotel_Reservations.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
+
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByEmailAsync(model.Email);
@@ -213,11 +231,21 @@ namespace Hotel_Reservations.Controllers
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                var message = new MailMessage();
+                string body = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
+                message.To.Add(new MailAddress(user.Email));
+                message.Subject = "Smutel Reset Password";
+                message.Body = body;
+                message.IsBodyHtml = true;
+                using (var smtp = new SmtpClient())
+                {
+                    await smtp.SendMailAsync(message);
+                    return RedirectToAction("ForgotPasswordConfirmation");
+                }
+                
             }
 
-            // If we got this far, something failed, redisplay form
+            //// If we got this far, something failed, redisplay form
             return View(model);
         }
 

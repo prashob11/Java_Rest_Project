@@ -231,10 +231,11 @@ table {
     background: transparent !important;
     box-shadow: none !important;
   }
-  a,
-  a:visited {
-    text-decoration: underline;
-  }
+    a,
+    a:visited {
+        text-decoration: underline;
+        color: white;
+    }
   a[href]:after {
     content: " (" attr(href) ")";
   }
