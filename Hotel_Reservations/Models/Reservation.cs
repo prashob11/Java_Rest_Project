@@ -109,7 +109,7 @@ namespace Reservations
 
         [Column(TypeName = "date")]
         [Validators.CreditCardExpDateValidation]
-        [Display(Name = "Expiration Date")]
+        [Display(Name = "Expiration Date (MM/YYYY)")]
         [DisplayFormat(DataFormatString = @"{0:MM\/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CreditCardExpDate { get; set; }
 
