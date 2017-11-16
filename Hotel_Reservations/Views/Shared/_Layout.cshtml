@@ -3,12 +3,40 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title | Book Rooms At Amazing Prices!</title>
+    <title style="color:#ffffff">@ViewBag.Title | Book Rooms At Amazing Prices!</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <style>
+        /* Sticky footer styles
+-------------------------------------------------- */
+        html {
+            position: relative;
+            min-height: 100%;
+            
+        }
 
+        body {
+            /* Margin bottom by footer height */
+            background-image: url(../../Content/images/blended-935156.jpg);
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            margin-bottom: 60px;
+            color: #ffffff;
+            
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            /* Set the fixed height of the footer here */
+            height: 40px;
+            color: #ffffff;
+        }
+    </style>
 </head>
-<body>
+<body >
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -32,9 +60,9 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+       
+        <footer class="footer">
+            <p>&copy; @DateTime.Now.Year - Smutel</p>
         </footer>
     </div>
 
@@ -52,7 +80,7 @@
     <script type="text/javascript">
             $(document).ready(function () {
                 $('#checkin, #checkout').datepicker({
-                    dateFormat: "dd/M/yy",
+                    dateFormat: "yy-mm-dd",
                     changeMonth: true,
                     changeYear: true,
                     yearRange: "-0:+1"
@@ -90,29 +118,30 @@
 
 
     <script type="text/javascript">
-
-    $(document).ready(function () {
-        $("#city").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: "/Reservations/GetCities",
-                    type: "post",
-                    datatype: "json",
-                    data: { regionId: $('#region').val() },
-                    success: function (data) {
-                        response($.map(data, function (val, item) {
-                            return {
-                                label: val,
-                               value: val,
+        $(document).ready(function () {
+            $("#city").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Reservations/GetCities",
+                        type: "post",
+                        datatype: "json",
+                        data: { regionId: $('#region').val(), prefix: request.term },
+                        success: function (data) {
+                            response($.map(data, function (val, item) {
+                                return {
+                                    label: val,
+                                    value: val,
+                                }
+                            }))
                         }
-                    }))
+                    })
                 }
-            })
-        }
-    });
-});
-    </script>  >
+            });
+        });
+    </script>  
 
-
-</body>
-</html>
+    <script type="text/javascript">
+        $('#CreditCardExpDate').removeAttr("data-val-date");
+    </script>  
+</body >
+</html >

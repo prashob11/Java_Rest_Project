@@ -11,6 +11,10 @@ namespace Reservations.Validators
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            if (value == null)
+            {
+                return new ValidationResult("The date is invalid");
+            }
             DateTime expdate = (DateTime)value;
 
             if (expdate < DateTime.Today)

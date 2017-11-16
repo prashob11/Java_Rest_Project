@@ -14,6 +14,7 @@ namespace Reservations
         private ModelReservations db = new ModelReservations();
 
         // GET: Reservations
+        [Authorize]
         public ActionResult Index()
         {
             var reservations = db.Reservations.Include(r => r.Country1).Include(r => r.CreditCardType1).Include(r => r.Region1).Include(r => r.RoomType1);
@@ -21,6 +22,7 @@ namespace Reservations
         }
 
         // GET: Reservations/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,12 +38,14 @@ namespace Reservations
         }
 
         // GET: Reservations/Create
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.country = new SelectList(db.Countries, "countryId", "country1");
             ViewBag.CreditCardType = new SelectList(db.CreditCardTypes, "cctId", "type");
             ViewBag.region = new SelectList(db.Regions, "regionId", "region1");
             ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1");
+            ViewBag.city = new SelectList(db.Cities, "cityId", "city1");
             return View();
         }
 
@@ -50,6 +54,7 @@ namespace Reservations
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create([Bind(Include = "reservationId,numberOfGuests,numberOfRooms,roomType,checkin,checkout,firstName,lastName,streetNumber,streetName,city,region,country,postalCode,phoneNumber,emailAddress,nameOnTheCard,CreditCardnumber,CreditCardType,CreditCardExpDate")] Reservation reservation)
         {
             if (ModelState.IsValid)
@@ -58,17 +63,19 @@ namespace Reservations
                 db.SaveChanges();
                 MakeReservations(reservation);
                 return RedirectToAction("Index");
-                
+
             }
 
             ViewBag.country = new SelectList(db.Countries, "countryId", "country1", reservation.country);
             ViewBag.CreditCardType = new SelectList(db.CreditCardTypes, "cctId", "type", reservation.CreditCardType);
             ViewBag.region = new SelectList(db.Regions, "regionId", "region1", reservation.region);
             ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1", reservation.roomType);
+            ViewBag.city = new SelectList(db.Cities, "cityId", "city1", reservation.city);
             return View(reservation);
         }
 
         // GET: Reservations/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -84,6 +91,7 @@ namespace Reservations
             ViewBag.CreditCardType = new SelectList(db.CreditCardTypes, "cctId", "type", reservation.CreditCardType);
             ViewBag.region = new SelectList(db.Regions, "regionId", "region1", reservation.region);
             ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1", reservation.roomType);
+            ViewBag.city = new SelectList(db.Cities, "cityId", "city1", reservation.city);
             return View(reservation);
         }
 
@@ -92,6 +100,7 @@ namespace Reservations
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit([Bind(Include = "reservationId,numberOfGuests,numberOfRooms,roomType,checkin,checkout,firstName,lastName,streetNumber,streetName,city,region,country,postalCode,phoneNumber,emailAddress,nameOnTheCard,CreditCardnumber,CreditCardType,CreditCardExpDate")] Reservation reservation)
         {
             if (ModelState.IsValid)
@@ -99,25 +108,27 @@ namespace Reservations
                 db.Entry(reservation).State = EntityState.Modified;
                 db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
                 db.SaveChanges();
-                MakeReservations(reservation);                
+                MakeReservations(reservation);
                 return RedirectToAction("Index");
             }
             ViewBag.country = new SelectList(db.Countries, "countryId", "country1", reservation.country);
             ViewBag.CreditCardType = new SelectList(db.CreditCardTypes, "cctId", "type", reservation.CreditCardType);
             ViewBag.region = new SelectList(db.Regions, "regionId", "region1", reservation.region);
             ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1", reservation.roomType);
+            ViewBag.city = new SelectList(db.Cities, "cityId", "city1", reservation.city);
             return View(reservation);
         }
 
+        [Authorize]
         private void MakeReservations(Reservation reservation)
         {
             int reservationId = reservation.reservationId;
             int numberOfRooms = reservation.numberOfRooms;
             int roomType = reservation.roomType;
-            
+
             //select rooms that are available
-            var availableRooms = Validators.ReservationDatesValidation.GetAvailableRooms(db, reservation.checkin, reservation.checkout, roomType);
-  
+            var availableRooms = Validators.ReservationDatesValidation.GetAvailableRooms(db, reservation.checkin, reservation.checkout, roomType, reservationId);
+
 
             if (availableRooms.Count() < numberOfRooms)
             {
@@ -139,6 +150,7 @@ namespace Reservations
         }
 
         // GET: Reservations/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -156,6 +168,7 @@ namespace Reservations
         // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
             Reservation reservation = db.Reservations.Find(id);
@@ -181,36 +194,57 @@ namespace Reservations
             List<SelectListItem> regions = new List<SelectListItem>();
             int cId = Convert.ToInt32(countryId);
             int rId = Convert.ToInt32(regionId);
+
+            //select all regions for the given country
+			db.Regions
+	             .Where(r => r.country == cId)
+	             .ToList()
+	             .ForEach(r =>
+	        {
+		         regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
+	        });
+
+            //if the region is already selected
             if (regionId != null)
-            {//make a list where selected region is first item                
-                db.Regions.Where(r => r.regionId == rId).ToList().ForEach(r =>
+            {
+                var sr = regions.Where(si => si.Value == regionId); 
+                /* 
+                 * if region with given regionId is in the list 
+                 * then move it in the beginning of the list (for Edit page)
+                 */
+                if (sr.Count() == 1)
                 {
-                    regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
-                });
-
-                db.Regions.Where(r => r.country == cId).Where(r => r.regionId != rId).ToList().ForEach(r =>
-                {
-                    regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
-                });
+                    var region = sr.First();
+                    regions.Remove(region);
+                    regions.Insert(0, region);
+                }
             }
-            else
-            {//list all regions
-                db.Regions.Where(r => r.country == cId).Where(r => r.regionId != rId).ToList().ForEach(r =>
-                {
-                    regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
-                });
-            }
-
 
             return Json(regions, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult GetCities(string regionId)
+        public ActionResult GetCities(string regionId, string prefix)
         {
 
             int rId = Convert.ToInt32(regionId);
-            List<string> cities = db.Cities.Where(c => c.region == rId).Select(c => c.city1).ToList();
+            List<string> cities;
+            if (String.IsNullOrEmpty(prefix))
+            {
+                cities = db.Cities
+                    .Where(c => c.region == rId)
+                    .Select(c => c.city1)
+                    .ToList();
+            }
+            else
+            {
+                cities = db.Cities
+                    .Where(c => c.region == rId)
+                    .Select(c => c.city1)
+                    .Where(c => c.ToLower().StartsWith(prefix))
+                    .ToList();
+            }
+
 
 
             return Json(cities, JsonRequestBehavior.AllowGet);
