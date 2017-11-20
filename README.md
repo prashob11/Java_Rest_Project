@@ -6,7 +6,7 @@ Prashob
 
 Zhengyang
 
-Najvot
+Navjot
 
 Nikita
 
@@ -18,5 +18,3 @@ Chosen: Project of Nikita/Prashob
 
 3. Countries
 
-
-test_navjot
