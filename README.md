@@ -18,3 +18,14 @@ Chosen: Project of Nikita/Prashob
 
 3. Countries
 
+
+11/20/2017: 
+Deliverables for 11/22/17
+
+Prashob: Create entity, controller & DAO for city 
+
+Zhengyang: Create entity, controller & DAO for region
+
+Navjot: Create entity, controller & DAO for country
+
+Nikita: Add database connection to project
