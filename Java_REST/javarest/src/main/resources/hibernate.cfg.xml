@@ -13,5 +13,6 @@
     
     <mapping class="entities.Country" />
     <mapping class="entities.City"/>
+    <mapping class="entities.Region"/>
   </session-factory>
 </hibernate-configuration>
