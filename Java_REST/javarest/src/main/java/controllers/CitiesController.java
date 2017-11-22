@@ -8,26 +8,23 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import dao.CityDAO;
+import entities.City;;
 
-import dao.CountryDAO;
-import entities.Country;
+@Path("/Cities")
+public class CitiesController {
 
-
-@Path("/Countries")
-public class CountriesController {
-
-	CountryDAO dao = new CountryDAO();
-	
 	@GET
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<Country> getCountries() {
-        return dao.getCountries();
+    public List<City> getCities() {
+        List<City> cities = new CityDAO().getCities();
+        return cities;
     }
 	
 	@GET
     @Path("/{id}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<Country> getCountry(@PathParam("id") int id) {
-		return dao.getCountry(id);	
+    public City getCity(@PathParam("id") int id) {
+        return null;
     }
 }
