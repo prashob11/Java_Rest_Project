@@ -12,5 +12,6 @@
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     
     <mapping class="entities.Country" />
+    <mapping class="entities.City"/>
   </session-factory>
 </hibernate-configuration>
