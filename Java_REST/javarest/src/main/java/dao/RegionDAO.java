@@ -10,22 +10,21 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-
-import entities.Country;
+import entities.Region;
 import utils.HibernateUtil;
 
-public class CountryDAO {
-
+public class RegionDAO {
+	
 	SessionFactory sf = HibernateUtil.getSessionFactory();
 
 	
-	public List<Country> getCountries() {
+	public List<Region> getRegions() {
 		Session session = sf.openSession();
 		
 		
-		CriteriaQuery<Country> cq = session.getCriteriaBuilder().createQuery(Country.class);
-		cq.from(Country.class);
-		List<Country> countries = session.createQuery(cq).getResultList();	
+		CriteriaQuery<Region> cq = session.getCriteriaBuilder().createQuery(Region.class);
+		cq.from(Region.class);
+		List<Region> countries = session.createQuery(cq).getResultList();	
 		
 		
 		session.close();		
@@ -33,19 +32,18 @@ public class CountryDAO {
 	}
 	
 	
-	public List<Country> getCountry(int id) {
+	public List<Region> getRegionsByCountryId(int countryId) {
 		Session session = sf.openSession();
 		
 		CriteriaBuilder cb = session.getCriteriaBuilder();
-		CriteriaQuery<Country> cq = cb.createQuery(Country.class);		
-		Root<Country> countryRoot = cq.from(Country.class);
-		Predicate predicate = cb.equal(countryRoot.get("countryId"), id);
+		CriteriaQuery<Region> cq = cb.createQuery(Region.class);		
+		Root<Region> regionRoot = cq.from(Region.class);
+		Predicate predicate = cb.equal(regionRoot.get("country"), countryId);
 		cq.where(predicate);		
-	    List<Country> country = session.createQuery(cq).getResultList();
+	    List<Region> regions = session.createQuery(cq).getResultList();
 		
 		session.close();		
-		return country;	
+		return regions;	
 	}
-	
 
 }
