@@ -14,5 +14,6 @@
     <mapping class="entities.Country" />
     <mapping class="entities.City"/>
     <mapping class="entities.Region"/>
+    <mapping class="entities.Reservation"/>
   </session-factory>
 </hibernate-configuration>
