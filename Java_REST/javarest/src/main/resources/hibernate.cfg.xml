@@ -15,5 +15,6 @@
     <mapping class="entities.City"/>
     <mapping class="entities.Region"/>
     <mapping class="entities.Reservation"/>
+    <mapping class="entities.ReservedRoom"/>
   </session-factory>
 </hibernate-configuration>
