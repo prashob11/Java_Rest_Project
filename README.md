@@ -29,3 +29,15 @@ Zhengyang: Create entity, controller & DAO for region
 Navjot: Create entity, controller & DAO for country
 
 Nikita: Add database connection to project
+
+11/22/2017: 
+Deliverables for 11/27/17
+
+Prashob: Create entity, controller & DAO for Rooms & RoomType 
+
+Zhengyang: Create entity, controller & DAO for ReservedRooms
+
+Navjot: Create entity, controller & DAO for CreditCardType
+
+Nikita: Create entity, controller & DAO for Reservations
+
