@@ -14,5 +14,7 @@
     <mapping class="entities.Country" />
     <mapping class="entities.City"/>
     <mapping class="entities.Region"/>
+    <mapping class="entities.CreditCard"/>
+    
   </session-factory>
 </hibernate-configuration>
