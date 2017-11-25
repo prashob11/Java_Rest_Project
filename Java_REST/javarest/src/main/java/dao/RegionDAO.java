@@ -24,11 +24,11 @@ public class RegionDAO {
 		
 		CriteriaQuery<Region> cq = session.getCriteriaBuilder().createQuery(Region.class);
 		cq.from(Region.class);
-		List<Region> countries = session.createQuery(cq).getResultList();	
+		List<Region> regions = session.createQuery(cq).getResultList();	
 		
 		
 		session.close();		
-		return countries;		
+		return regions;		
 	}
 	
 	
