@@ -1,5 +1,6 @@
 package dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaQuery;
@@ -7,7 +8,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
+import org.hibernate.Transaction;
 
 import entities.Reservation;
 import utils.HibernateUtil;
@@ -29,6 +30,38 @@ public class ReservationDAO {
 		session.close();		
 		return reservations;		
 	}
+
+
+	public boolean deleteReservation(int id) {
+		Session session = sf.openSession();
+		Transaction trn = session.beginTransaction();
+	    
+		Serializable reservationId = new Integer(id);
+		
+		Reservation r = session.get(Reservation.class, reservationId);
+		if (r == null) {
+			// not found, nothing to delete
+			return false;
+		}
+		
+	    session.delete(r);
+		trn.commit();
+	    session.close();
+		return true;	
+	}
+
+
+	public Serializable createReservation(Reservation r) {
+		Session session = sf.openSession();
+		Transaction trn = session.beginTransaction();
+	    
+		Serializable id = session.save(r);
+
+		trn.commit();
+	    session.close();
+		return id;		
+	}
+	
 	
 
 }
