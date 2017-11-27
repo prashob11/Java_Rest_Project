@@ -41,3 +41,7 @@ Navjot: Create entity, controller & DAO for CreditCardType
 
 Nikita: Create entity, controller & DAO for Reservations
 
+
+11/27/2017: 
+Deliverables for 12/4/17
+Connect Rest API with ASP.NET Project.

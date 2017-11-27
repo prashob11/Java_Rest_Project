@@ -20,6 +20,10 @@ public class Reservation {
 
 	@Column(name = "numberOfGuests")
 	private int numberOfGuests;
+	
+	@Column(name = "numberOfRooms")
+	private int numberOfRooms;
+
 
 	@Column(name = "roomType")
 	private int roomType;
@@ -80,6 +84,14 @@ public class Reservation {
 		this.reservationId = reservationId;
 	}
 
+	public int getNumberOfRooms() {
+		return numberOfRooms;
+	}
+
+	public void setNumberOfRooms(int numberOfRooms) {
+		this.numberOfRooms = numberOfRooms;
+	}
+	
 	public int getNumberOfGuests() {
 		return numberOfGuests;
 	}
