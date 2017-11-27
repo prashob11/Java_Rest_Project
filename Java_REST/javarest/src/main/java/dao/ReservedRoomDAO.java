@@ -10,9 +10,6 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-
-import entities.City;
-import entities.Region;
 import entities.ReservedRoom;
 import utils.HibernateUtil;
 
@@ -32,7 +29,7 @@ public class ReservedRoomDAO {
 		return ReservedRooms;		
 	}
 	
-	public List<ReservedRoom> getRegionsByReservationId(int reservationId) {
+	public List<ReservedRoom> getReservedRoomsByReservationId(int reservationId) {
 		Session session = sf.openSession();
 		
 		CriteriaBuilder cb = session.getCriteriaBuilder();
