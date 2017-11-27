@@ -9,8 +9,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import dao.ReservedRoomDAO;
-import entities.Region;
-import entities.Reservation;
 import entities.ReservedRoom;
 
 
@@ -28,6 +26,6 @@ public class ReservedRoomController {
     @Path("/{reservationId}")
     @Produces({ MediaType.APPLICATION_JSON })
     public List<ReservedRoom> getRegionsByCountryId(@PathParam("reservationId") int reservationId) {
-		return dao.getRegionsByReservationId(reservationId);	
+		return dao.getReservedRoomsByReservationId(reservationId);	
     }
 }
