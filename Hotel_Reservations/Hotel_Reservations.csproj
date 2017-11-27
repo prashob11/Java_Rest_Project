@@ -232,6 +232,7 @@
     <Compile Include="Validators\PostalValidation.cs" />
     <Compile Include="Validators\RegionValidation.cs" />
     <Compile Include="Validators\ReservationDatesValidation.cs" />
+    <Compile Include="ws\WSClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-lumen.css" />
