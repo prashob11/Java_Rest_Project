@@ -14,6 +14,10 @@
     <mapping class="entities.Country" />
     <mapping class="entities.City"/>
     <mapping class="entities.Region"/>
+	<mapping class="entities.CreditCard"/>
     <mapping class="entities.Reservation"/>
+    <mapping class="entities.ReservedRoom"/>
+	<mapping class="entities.Room"/>
+	<mapping class="entities.RoomType"/>
   </session-factory>
 </hibernate-configuration>
