@@ -20,7 +20,7 @@ namespace Reservations
         {
             //var reservations = db.Reservations.Include(r => r.Country1).Include(r => r.CreditCardType1).Include(r => r.Region1).Include(r => r.RoomType1);
 
-            var reservations = new WSClient().getAllReservations();
+            var reservations = new ReservationsWSClient().getAllReservations();
             return View(reservations.ToList());
             //return View(reservations.ToList());
         }
@@ -33,7 +33,8 @@ namespace Reservations
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reservation reservation = db.Reservations.Find(id);
+            //Reservation reservation = db.Reservations.Find(id);
+            Reservation reservation = new ReservationsWSClient().getReservation(id.Value);
             if (reservation == null)
             {
                 return HttpNotFound();
