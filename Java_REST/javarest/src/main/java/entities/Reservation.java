@@ -9,6 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import utils.CustomDateSerializer;
+
 @Entity
 @Table(name = "Reservations")
 public class Reservation {
@@ -24,11 +29,10 @@ public class Reservation {
 	@Column(name = "numberOfRooms")
 	private int numberOfRooms;
 
-
 	@Column(name = "roomType")
 	private int roomType;
 
-	@Column(name = "checkin")
+	@JsonProperty("checkin")
 	private Date checkin;
 
 	@Column(name = "checkout")
@@ -107,7 +111,8 @@ public class Reservation {
 	public void setRoomType(int roomType) {
 		this.roomType = roomType;
 	}
-
+	
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCheckin() {
 		return checkin;
 	}
@@ -116,9 +121,11 @@ public class Reservation {
 		this.checkin = checkin;
 	}
 
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCheckout() {
 		return checkout;
 	}
+	
 
 	public void setCheckout(Date checkout) {
 		this.checkout = checkout;
@@ -228,9 +235,11 @@ public class Reservation {
 		this.creditCardType = creditCardType;
 	}
 
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreditCardExpDate() {
 		return creditCardExpDate;
 	}
+	
 
 	public void setCreditCardExpDate(Date creditCardExpDate) {
 		this.creditCardExpDate = creditCardExpDate;

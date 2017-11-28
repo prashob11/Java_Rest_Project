@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hotel_Reservations.ws;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -17,8 +18,11 @@ namespace Reservations
         [Authorize]
         public ActionResult Index()
         {
-            var reservations = db.Reservations.Include(r => r.Country1).Include(r => r.CreditCardType1).Include(r => r.Region1).Include(r => r.RoomType1);
+            //var reservations = db.Reservations.Include(r => r.Country1).Include(r => r.CreditCardType1).Include(r => r.Region1).Include(r => r.RoomType1);
+
+            var reservations = new ReservationsWSClient().getAllReservations();
             return View(reservations.ToList());
+            //return View(reservations.ToList());
         }
 
         // GET: Reservations/Details/5
@@ -29,7 +33,8 @@ namespace Reservations
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reservation reservation = db.Reservations.Find(id);
+            //Reservation reservation = db.Reservations.Find(id);
+            Reservation reservation = new ReservationsWSClient().getReservation(id.Value);
             if (reservation == null)
             {
                 return HttpNotFound();
