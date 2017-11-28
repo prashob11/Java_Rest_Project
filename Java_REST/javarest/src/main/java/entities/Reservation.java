@@ -71,12 +71,15 @@ public class Reservation {
 	@Column(name = "nameOnTheCard")
 	private String nameOnTheCard;
 
+	@JsonProperty("CreditCardnumber")
 	@Column(name = "CreditCardnumber")
 	private String creditCardnumber;
 
+	@JsonProperty("CreditCardType")
 	@Column(name = "CreditCardType")
 	private int creditCardType;
 
+	@JsonProperty("CreditCardExpDate")
 	@Column(name = "CreditCardExpDate")
 	private Date creditCardExpDate;
 
