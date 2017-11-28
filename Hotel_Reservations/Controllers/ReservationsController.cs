@@ -64,9 +64,14 @@ namespace Reservations
         {
             if (ModelState.IsValid)
             {
-                db.Reservations.Add(reservation);
-                db.SaveChanges();
-                MakeReservations(reservation);
+                //db code
+                //db.Reservations.Add(reservation);
+                //db.SaveChanges();
+                //MakeReservations(reservation);
+
+                //ws code
+                new ReservationsWSClient().createReservation(reservation);
+
                 return RedirectToAction("Index");
 
             }
@@ -87,7 +92,9 @@ namespace Reservations
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reservation reservation = db.Reservations.Find(id);
+
+            //Reservation reservation = db.Reservations.Find(id);
+            Reservation reservation = new ReservationsWSClient().getReservation(id.Value);
             if (reservation == null)
             {
                 return HttpNotFound();
@@ -110,10 +117,11 @@ namespace Reservations
         {
             if (ModelState.IsValid)
             {
-                db.Entry(reservation).State = EntityState.Modified;
-                db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
-                db.SaveChanges();
-                MakeReservations(reservation);
+                //db.Entry(reservation).State = EntityState.Modified;
+                new ReservationsWSClient().createReservation(reservation);
+                //db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
+                //db.SaveChanges();
+                //MakeReservations(reservation);
                 return RedirectToAction("Index");
             }
             ViewBag.country = new SelectList(db.Countries, "countryId", "country1", reservation.country);
@@ -162,7 +170,8 @@ namespace Reservations
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reservation reservation = db.Reservations.Find(id);
+            //Reservation reservation = db.Reservations.Find(id);
+            Reservation reservation = new ReservationsWSClient().getReservation(id.Value);
             if (reservation == null)
             {
                 return HttpNotFound();
@@ -176,9 +185,15 @@ namespace Reservations
         [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
-            Reservation reservation = db.Reservations.Find(id);
-            db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
-            db.Reservations.Remove(reservation);
+
+
+            //TODO remove db-related code
+            //Reservation reservation = db.Reservations.Find(id);
+            //db.Reservations.Remove(reservation);
+            //db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
+
+            //ws code
+            new ReservationsWSClient().deleteReservation(id);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
