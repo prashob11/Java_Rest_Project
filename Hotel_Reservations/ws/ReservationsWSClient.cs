@@ -58,7 +58,7 @@ namespace Hotel_Reservations.ws
                 var r = response.Content.ReadAsAsync<Reservation>().Result;
                 //TODO replace by WS calls
                 ModelReservations db = new ModelReservations();
-                r.Country1 = db.Countries.Find(r.country);
+                //r.Country1 = db.Countries.Find(r.country);
                 r.Region1 = db.Regions.Find(r.region);
                 r.RoomType1 = db.RoomTypes.Find(r.roomType);
                 r.CreditCardType1 = db.CreditCardTypes.Find(r.CreditCardType);

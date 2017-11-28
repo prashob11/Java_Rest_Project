@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import dao.CountryDAO;
 import utils.CustomDateSerializer;
 
 @Entity
@@ -83,6 +84,16 @@ public class Reservation {
 	@Column(name = "CreditCardExpDate")
 	private Date creditCardExpDate;
 
+	@JsonProperty("Country1")
+	public Country getCountry1() {
+		return new CountryDAO().getCountry(this.country).get(0);
+	}
+	
+//	@JsonProperty("Region1")
+//	public Region getRegion1() {
+//		return new RegionDAO().getRegions().stream().filter(r -> r.getRegionId() == this.region).findFirst().get();
+//	}
+	
 	public int getReservationId() {
 		return reservationId;
 	}
