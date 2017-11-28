@@ -9,6 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import dao.CountryDAO;
+import utils.CustomDateSerializer;
+
 @Entity
 @Table(name = "Reservations")
 public class Reservation {
@@ -24,11 +30,10 @@ public class Reservation {
 	@Column(name = "numberOfRooms")
 	private int numberOfRooms;
 
-
 	@Column(name = "roomType")
 	private int roomType;
 
-	@Column(name = "checkin")
+	@JsonProperty("checkin")
 	private Date checkin;
 
 	@Column(name = "checkout")
@@ -67,15 +72,28 @@ public class Reservation {
 	@Column(name = "nameOnTheCard")
 	private String nameOnTheCard;
 
+	@JsonProperty("CreditCardnumber")
 	@Column(name = "CreditCardnumber")
 	private String creditCardnumber;
 
+	@JsonProperty("CreditCardType")
 	@Column(name = "CreditCardType")
 	private int creditCardType;
 
+	@JsonProperty("CreditCardExpDate")
 	@Column(name = "CreditCardExpDate")
 	private Date creditCardExpDate;
 
+	@JsonProperty("Country1")
+	public Country getCountry1() {
+		return new CountryDAO().getCountry(this.country).get(0);
+	}
+	
+//	@JsonProperty("Region1")
+//	public Region getRegion1() {
+//		return new RegionDAO().getRegions().stream().filter(r -> r.getRegionId() == this.region).findFirst().get();
+//	}
+	
 	public int getReservationId() {
 		return reservationId;
 	}
@@ -107,7 +125,8 @@ public class Reservation {
 	public void setRoomType(int roomType) {
 		this.roomType = roomType;
 	}
-
+	
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCheckin() {
 		return checkin;
 	}
@@ -116,9 +135,11 @@ public class Reservation {
 		this.checkin = checkin;
 	}
 
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCheckout() {
 		return checkout;
 	}
+	
 
 	public void setCheckout(Date checkout) {
 		this.checkout = checkout;
@@ -228,9 +249,11 @@ public class Reservation {
 		this.creditCardType = creditCardType;
 	}
 
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreditCardExpDate() {
 		return creditCardExpDate;
 	}
+	
 
 	public void setCreditCardExpDate(Date creditCardExpDate) {
 		this.creditCardExpDate = creditCardExpDate;

@@ -28,6 +28,13 @@ public class ReservationsController {
         return dao.getReservations();
     }
 	
+	@GET
+	@Path("/{id}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Reservation getReservation(@PathParam("id") int id) {
+		return dao.getReservation(id);
+	}
+	
 	@DELETE
 	@Path("/{id}")
 	@Produces({ MediaType.APPLICATION_JSON })
