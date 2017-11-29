@@ -1,6 +1,5 @@
 package dao;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,9 +12,6 @@ import org.hibernate.SessionFactory;
 
 
 import entities.City;
-import entities.Country;
-import entities.Region;
-import entities.Reservation;
 import utils.HibernateUtil;
 
 public class CityDAO {
