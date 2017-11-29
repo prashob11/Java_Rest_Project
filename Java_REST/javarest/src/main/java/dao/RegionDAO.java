@@ -10,7 +10,6 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import entities.City;
 import entities.Region;
 import utils.HibernateUtil;
 

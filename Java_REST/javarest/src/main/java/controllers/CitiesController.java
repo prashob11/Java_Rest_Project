@@ -9,10 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import dao.CityDAO;
-import dao.CountryDAO;
 import entities.City;
-import entities.Country;
-import entities.Region;;
 
 @Path("/Cities")
 public class CitiesController {
