@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 @Entity
 @Table(name = "Countries")
 public class Country implements Serializable {
@@ -33,6 +35,7 @@ public class Country implements Serializable {
 		this.countryId = countryId;
 	}
 
+	@JsonProperty("country1")
 	public String getCountry() {
 		return country;
 	}

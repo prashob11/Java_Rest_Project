@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 @Entity
 @Table(name = "RoomType")
 public class RoomType implements Serializable {
@@ -46,6 +48,7 @@ public class RoomType implements Serializable {
 		this.maxGuests = maxGuests;
 	}
 
+	@JsonProperty("roomType1")
 	public String getRoomType() {
 		return roomType;
 	}

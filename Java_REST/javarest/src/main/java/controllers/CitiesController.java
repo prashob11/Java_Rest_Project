@@ -9,11 +9,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import dao.CityDAO;
-import entities.City;;
+import entities.City;
 
 @Path("/Cities")
 public class CitiesController {
 
+	CityDAO dao = new CityDAO();
+	
 	@GET
     @Produces({ MediaType.APPLICATION_JSON })
     public List<City> getCities() {
@@ -22,9 +24,17 @@ public class CitiesController {
     }
 	
 	@GET
-    @Path("/{id}")
+    @Path("/{regionId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public City getCity(@PathParam("id") int id) {
-        return null;
+    public List<City> getCitiesByRegionId(@PathParam("regionId") int regionId) {
+		return dao.getCitiesByRegionId(regionId);	
     }
+	
+	@GET
+    @Path("/{regionId}/{Id}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public List<City> getCity(@PathParam("Id") int Id) {
+		return dao.getCity(Id);	
+    }
+	
 }

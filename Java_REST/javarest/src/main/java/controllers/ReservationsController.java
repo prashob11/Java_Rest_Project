@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -28,6 +29,13 @@ public class ReservationsController {
         return dao.getReservations();
     }
 	
+	@GET
+	@Path("/{id}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Reservation getReservation(@PathParam("id") int id) {
+		return dao.getReservation(id);
+	}
+	
 	@DELETE
 	@Path("/{id}")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -36,10 +44,18 @@ public class ReservationsController {
 		return Response.status(deleted ? Response.Status.OK : Response.Status.NO_CONTENT).build();
 	}
 	
-	@PUT
+	@POST
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Consumes({ MediaType.APPLICATION_JSON })
 	public Serializable createReservation(Reservation r) {		
 		return dao.createReservation(r);
+	}
+	
+	@PUT
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	public Response editReservation(Reservation r) {
+		dao.editReservation(r);
+		return Response.status(Response.Status.OK).build();
 	}
 }

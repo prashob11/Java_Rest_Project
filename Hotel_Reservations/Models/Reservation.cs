@@ -6,7 +6,9 @@ namespace Reservations
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
     using System.Linq;
+    using System.Runtime.Serialization;
     using System.Text;
+    using System.Web.Script.Serialization;
 
     public partial class Reservation
     {
@@ -15,7 +17,6 @@ namespace Reservations
         {
             ReservedRooms = new HashSet<ReservedRoom>();
         }
-
         public int reservationId { get; set; }
 
         [Validators.NumberOfGuestsValidation]
@@ -113,28 +114,30 @@ namespace Reservations
         [DisplayFormat(DataFormatString = @"{0:MM\/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CreditCardExpDate { get; set; }
 
-
+        [ScriptIgnore]
         public virtual Country Country1 { get; set; }
 
-
+        [ScriptIgnore]
         public virtual CreditCardType CreditCardType1 { get; set; }
 
-
+        [ScriptIgnore]
         public virtual Region Region1 { get; set; }
 
- 
+        [ScriptIgnore]
         public virtual RoomType RoomType1 { get; set; }
 
+        [ScriptIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReservedRoom> ReservedRooms { get; set; }
 
-
+        [ScriptIgnore]
         [NotMapped]
         [Display(Name = "Room Numbers")]
         public string RoomNumbers
         {
             get
             {
+                //TODO replace by ws call
                 ModelReservations db = new ModelReservations();
                 var reservedRooms = this.ReservedRooms.Select(rr => rr.roomId).ToList();
                 var roomNumbers = db.Rooms.Where(r => reservedRooms.Contains(r.roomId))
@@ -144,5 +147,6 @@ namespace Reservations
                 return String.Join(", ", roomNumbers); 
             }
         }
+
     }
 }
