@@ -13,6 +13,9 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import dao.CountryDAO;
+import dao.CreditCardDAO;
+import dao.RegionDAO;
+import dao.RoomTypeDAO;
 import utils.CustomDateSerializer;
 
 @Entity
@@ -89,10 +92,20 @@ public class Reservation {
 		return new CountryDAO().getCountry(this.country).get(0);
 	}
 	
-//	@JsonProperty("Region1")
-//	public Region getRegion1() {
-//		return new RegionDAO().getRegions().stream().filter(r -> r.getRegionId() == this.region).findFirst().get();
-//	}
+	@JsonProperty("RoomType1")
+	public RoomType getRoomType1() {
+		return new RoomTypeDAO().getRoomType(this.roomType).get(0);
+	}
+	
+	@JsonProperty("CreditCardType1")
+	public CreditCard getCreditCardType1() {
+		return new CreditCardDAO().getCreditcard(this.creditCardType).get(0);
+	}
+	
+	@JsonProperty("Region1")
+	public Region getRegion1() {
+		return new RegionDAO().getRegion(this.region).get(0);
+	}
 	
 	public int getReservationId() {
 		return reservationId;

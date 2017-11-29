@@ -17,7 +17,6 @@ namespace Reservations
         {
             ReservedRooms = new HashSet<ReservedRoom>();
         }
-        [ScriptIgnore]
         public int reservationId { get; set; }
 
         [Validators.NumberOfGuestsValidation]

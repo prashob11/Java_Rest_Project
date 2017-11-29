@@ -17,7 +17,7 @@ namespace Hotel_Reservations.ws
         private static string GET_ALL_URL = "http://localhost:8080/javarest/Reservations";
         private static string urlParameters = "";
 
-        public IEnumerable<Reservation> getAllReservations()
+        public IEnumerable<Reservation> GetAllReservations()
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(GET_ALL_URL);
@@ -29,12 +29,8 @@ namespace Hotel_Reservations.ws
             if (response.IsSuccessStatusCode)
             {
                 IEnumerable<Reservation> reservations = response.Content.ReadAsAsync<IEnumerable<Reservation>>().Result;
-                //TODO replace by WS calls
-                ModelReservations db = new ModelReservations();
                 var rl = reservations.ToList();
-                rl.ForEach(r => r.RoomType1 = db.RoomTypes.Find(r.roomType));
-                return rl;
-                 
+                return rl;              
 
             }
             else
@@ -43,7 +39,7 @@ namespace Hotel_Reservations.ws
             }
         }
 
-        public Reservation getReservation(int id)
+        public Reservation GetReservation(int id)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(GET_ALL_URL);
@@ -53,15 +49,8 @@ namespace Hotel_Reservations.ws
 
             HttpResponseMessage response = client.GetAsync("/javarest/Reservations/" + id).Result;
             if (response.IsSuccessStatusCode)
-            {
-                
+            {                
                 var r = response.Content.ReadAsAsync<Reservation>().Result;
-                //TODO replace by WS calls
-                ModelReservations db = new ModelReservations();
-                //r.Country1 = db.Countries.Find(r.country);
-                r.Region1 = db.Regions.Find(r.region);
-                r.RoomType1 = db.RoomTypes.Find(r.roomType);
-                r.CreditCardType1 = db.CreditCardTypes.Find(r.CreditCardType);
                 return r;
             }
             else
@@ -71,7 +60,7 @@ namespace Hotel_Reservations.ws
         }
 
 
-        public void deleteReservation(int id)
+        public void DeleteReservation(int id)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(GET_ALL_URL);
@@ -82,7 +71,21 @@ namespace Hotel_Reservations.ws
             client.DeleteAsync("/javarest/Reservations/" + id).Wait();
         }
 
-        public void createReservation(Reservation r)
+        public void CreateReservation(Reservation r)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(GET_ALL_URL);
+
+            client.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var jrRaw = new JavaScriptSerializer().Serialize(r);
+            string jr = Regex.Replace(jrRaw, @"""\\/Date\((\d+)\)\\/""", "$1");
+            var content = new StringContent(jr.ToString(), Encoding.UTF8, "application/json");
+            client.PostAsync(@"/javarest/Reservations/", content).Wait();
+        }
+
+        public void EditReservation(Reservation r)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(GET_ALL_URL);
