@@ -5,13 +5,14 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaQuery;
 
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import entities.Reservation;
 import utils.HibernateUtil;
+import entities.Reservation;
+
+
 
 public class ReservationDAO {
 	
@@ -31,6 +32,22 @@ public class ReservationDAO {
 		return reservations;		
 	}
 
+	public Reservation getReservation(int id) {
+		Session session = sf.openSession();
+
+		Serializable reservationId = new Integer(id);
+		
+		Reservation r = session.get(Reservation.class, reservationId);
+		if (r == null) {
+			// not found, nothing to delete
+		    session.close();
+			return null;
+		}
+		
+
+	    session.close();
+		return r;	
+	}
 
 	public boolean deleteReservation(int id) {
 		Session session = sf.openSession();
@@ -41,6 +58,8 @@ public class ReservationDAO {
 		Reservation r = session.get(Reservation.class, reservationId);
 		if (r == null) {
 			// not found, nothing to delete
+			trn.rollback();
+		    session.close();
 			return false;
 		}
 		
