@@ -28,4 +28,11 @@ public class RegionsController {
     public List<Region> getRegionsByCountryId(@PathParam("countryId") int countryId) {
 		return dao.getRegionsByCountryId(countryId);	
     }
+	
+	@GET
+    @Path("/{countryId}/{regionId}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public List<Region> getRegion(@PathParam("regionId") int regionId) {
+		return dao.getRegion(regionId);	
+    }
 }
