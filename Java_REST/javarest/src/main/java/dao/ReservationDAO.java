@@ -81,6 +81,17 @@ public class ReservationDAO {
 		return id;		
 	}
 	
+	public void editReservation(Reservation r) {
+		Session session = sf.openSession();
+		Transaction trn = session.beginTransaction();
+	    
+		session.update(r);
+
+		trn.commit();
+	    session.close();
+		return;		
+	}
+	
 	
 
 }

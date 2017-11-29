@@ -13,6 +13,8 @@ namespace Reservations
     public class ReservationsController : Controller
     {
         private ModelReservations db = new ModelReservations();
+        private ReservationsWSClient ws = new ReservationsWSClient();
+
 
         // GET: Reservations
         [Authorize]
@@ -20,9 +22,8 @@ namespace Reservations
         {
             //var reservations = db.Reservations.Include(r => r.Country1).Include(r => r.CreditCardType1).Include(r => r.Region1).Include(r => r.RoomType1);
 
-            var reservations = new ReservationsWSClient().getAllReservations();
+            var reservations = ws.GetAllReservations();
             return View(reservations.ToList());
-            //return View(reservations.ToList());
         }
 
         // GET: Reservations/Details/5
@@ -34,7 +35,7 @@ namespace Reservations
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             //Reservation reservation = db.Reservations.Find(id);
-            Reservation reservation = new ReservationsWSClient().getReservation(id.Value);
+            Reservation reservation = ws.GetReservation(id.Value);
             if (reservation == null)
             {
                 return HttpNotFound();
@@ -70,7 +71,7 @@ namespace Reservations
                 //MakeReservations(reservation);
 
                 //ws code
-                new ReservationsWSClient().createReservation(reservation);
+                ws.CreateReservation(reservation);
 
                 return RedirectToAction("Index");
 
@@ -94,7 +95,7 @@ namespace Reservations
             }
 
             //Reservation reservation = db.Reservations.Find(id);
-            Reservation reservation = new ReservationsWSClient().getReservation(id.Value);
+            Reservation reservation = ws.GetReservation(id.Value);
             if (reservation == null)
             {
                 return HttpNotFound();
@@ -118,7 +119,7 @@ namespace Reservations
             if (ModelState.IsValid)
             {
                 //db.Entry(reservation).State = EntityState.Modified;
-                new ReservationsWSClient().createReservation(reservation);
+                ws.EditReservation(reservation);
                 //db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
                 //db.SaveChanges();
                 //MakeReservations(reservation);
@@ -171,7 +172,7 @@ namespace Reservations
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             //Reservation reservation = db.Reservations.Find(id);
-            Reservation reservation = new ReservationsWSClient().getReservation(id.Value);
+            Reservation reservation = ws.GetReservation(id.Value);
             if (reservation == null)
             {
                 return HttpNotFound();
@@ -191,10 +192,11 @@ namespace Reservations
             //Reservation reservation = db.Reservations.Find(id);
             //db.Reservations.Remove(reservation);
             //db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
+            //db.SaveChanges();
 
             //ws code
-            new ReservationsWSClient().deleteReservation(id);
-            db.SaveChanges();
+            ws.DeleteReservation(id);
+
             return RedirectToAction("Index");
         }
 
