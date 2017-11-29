@@ -9,7 +9,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import dao.RoomTypeDAO;
-import entities.City;
 import entities.RoomType;
 
 
@@ -25,7 +24,7 @@ public class RoomTypesController {
     }
 
 	@GET
-    @Path("/{Id}")
+    @Path("/{rtId}")
     @Produces({ MediaType.APPLICATION_JSON })
     public List<RoomType> getRoomType(@PathParam("rtId") int rtId) {
 		return dao.getRoomType(rtId);	
