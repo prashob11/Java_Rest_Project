@@ -10,6 +10,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import entities.City;
 import entities.Region;
 import utils.HibernateUtil;
 
@@ -44,6 +45,20 @@ public class RegionDAO {
 		
 		session.close();		
 		return regions;	
+	}
+	
+	public List<Region> getRegion(int id) {
+		Session session = sf.openSession();
+		
+		CriteriaBuilder cb = session.getCriteriaBuilder();
+		CriteriaQuery<Region> cq = cb.createQuery(Region.class);		
+		Root<Region> regionRoot = cq.from(Region.class);
+		Predicate predicate = cb.equal(regionRoot.get("regionId"), id);
+		cq.where(predicate);		
+	    List<Region> region = session.createQuery(cq).getResultList();
+		
+		session.close();		
+		return region;	
 	}
 
 }
