@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hotel_Reservations.ws;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -23,11 +24,6 @@ namespace Reservations.Validators
             DateTime checkoutSelected = (DateTime)validationContext.ObjectType.GetProperty("checkout").GetValue(validationContext.ObjectInstance, null);
             int reservationId = (int)validationContext.ObjectType.GetProperty("reservationId").GetValue(validationContext.ObjectInstance, null);
 
-
-            //if (checkinSelected < DateTime.Now || checkoutSelected < DateTime.Now)
-            //{
-            //    return new ValidationResult("Check in and check out dates cannot be in the past");
-            //}
 
             if (checkinSelected > checkoutSelected)
             {
@@ -55,8 +51,9 @@ namespace Reservations.Validators
 
         public static List<int> GetAvailableRooms(ModelReservations db, DateTime checkin, DateTime checkout, int roomType, int reservationId)
         {
+            ReservationsWSClient ws = new ReservationsWSClient();
             //select rooms that are not available
-            var reservedRooms = from rsv in db.Reservations
+            var reservedRooms = from rsv in ws.GetAllReservations()
                                 join rr in db.ReservedRooms on rsv.reservationId equals rr.reservationId
                                 where rsv.checkin <= checkout && rsv.checkout >= checkin
                                 && rsv.roomType == roomType

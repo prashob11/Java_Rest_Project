@@ -15,7 +15,6 @@ import com.mysql.cj.core.util.StringUtils;
 
 import dao.CityDAO;
 import entities.City;
-import utils.SelectListItem;
 
 @Path("/Cities")
 public class CitiesController {
