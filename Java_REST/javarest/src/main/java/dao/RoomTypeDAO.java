@@ -18,7 +18,7 @@ public class RoomTypeDAO {
 	SessionFactory sf = HibernateUtil.getSessionFactory();
 
 	
-	public List<RoomType> getRoomType() {
+	public List<RoomType> getRoomTypes() {
 		Session session = sf.openSession();
 		
 		CriteriaQuery<RoomType> cq = session.getCriteriaBuilder().createQuery(RoomType.class);

@@ -20,7 +20,7 @@ public class RoomTypesController {
 	@GET
     @Produces({ MediaType.APPLICATION_JSON })
     public List<RoomType> getRoomType() {
-        return dao.getRoomType();
+        return dao.getRoomTypes();
     }
 
 	@GET
