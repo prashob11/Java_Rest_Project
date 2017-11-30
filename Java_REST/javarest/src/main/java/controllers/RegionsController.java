@@ -11,6 +11,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.mysql.cj.core.util.StringUtils;
+
 import dao.RegionDAO;
 import entities.Region;
 import utils.SelectListItem;
@@ -45,6 +47,10 @@ public class RegionsController {
     @Produces({ MediaType.APPLICATION_JSON })
 	public Response getRegionsForCascadingList(@QueryParam("countryId") String countryId,
 			@QueryParam("regionId") String regionId) {
+		
+		if(StringUtils.isNullOrEmpty(countryId)) {
+			return Response.noContent().build();
+		}
 		List<Region> regions = dao.getRegionsCascadingList(countryId, regionId);
 		List<SelectListItem> sli = regions.stream()
 				.map(r -> new SelectListItem(r.getRegion(), new Integer(r.getRegionId()).toString()))
