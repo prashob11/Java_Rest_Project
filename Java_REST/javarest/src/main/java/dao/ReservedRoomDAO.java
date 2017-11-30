@@ -46,14 +46,13 @@ public class ReservedRoomDAO {
 		return ReservedRooms;	
 	}
 	
-	public void deleteReservedRoom(int id) {
+	public void deleteReservedRooms(int reservationId) {
 		Session session = sf.openSession();
 		Transaction trn = session.beginTransaction();
 
-		ReservedRoom rr = session.get(ReservedRoom.class, id);
-		if (rr != null) {
-			session.delete(rr);
-		}
+		List<ReservedRoom> rrl = getReservedRoomsByReservationId(reservationId);
+		
+		rrl.forEach(rr -> session.delete(rr));
 
 		trn.commit();
 		session.close();

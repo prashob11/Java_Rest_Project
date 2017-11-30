@@ -14,7 +14,7 @@ namespace Reservations
     {
         private ModelReservations db = new ModelReservations();
         private ReservationsWSClient ws = new ReservationsWSClient();
-
+        private ReservedRoomsWSClient rrws = new ReservedRoomsWSClient();
 
         // GET: Reservations
         [Authorize]
@@ -186,10 +186,8 @@ namespace Reservations
         [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
-            db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == id));
-            db.SaveChanges();
 
-            //ws code
+            rrws.DeleteReservedRooms(id);
             ws.DeleteReservation(id);
 
             return RedirectToAction("Index");
