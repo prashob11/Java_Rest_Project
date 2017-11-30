@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import dao.CountryDAO;
 import dao.CreditCardDAO;
 import dao.RegionDAO;
+import dao.ReservedRoomDAO;
 import dao.RoomTypeDAO;
 import utils.CustomDateSerializer;
 
@@ -105,6 +107,11 @@ public class Reservation {
 	@JsonProperty("Region1")
 	public Region getRegion1() {
 		return new RegionDAO().getRegion(this.region).get(0);
+	}
+	
+	@JsonProperty("ReservedRooms")
+	public Collection<ReservedRoom> ReservedRooms() {
+		return new ReservedRoomDAO().getReservedRoomsByReservationId(this.reservationId);
 	}
 	
 	public int getReservationId() {

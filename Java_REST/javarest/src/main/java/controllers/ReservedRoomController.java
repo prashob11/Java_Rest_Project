@@ -35,10 +35,10 @@ public class ReservedRoomController {
     }
 	
 	@DELETE
-	@Path("/{id}")
+	@Path("/{reservationId}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response deleteReservedRoom(@PathParam("id") int id) {
-		dao.deleteReservedRoom(id);
+	public Response deleteReservedRooms(@PathParam("reservationId") int reservationId) {
+		dao.deleteReservedRooms(reservationId);
 		return Response.status(Response.Status.OK).build();
 	}
 	
