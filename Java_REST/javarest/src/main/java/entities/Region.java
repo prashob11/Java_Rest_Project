@@ -53,4 +53,33 @@ public class Region implements Serializable{
 	@Column(name = "country")
 	private int country;
 
+
+	
+	/*
+	 * need to remove region from the list, so hashCode() and equals()
+	 * generated based on regionId as it's unique
+	 * 
+	 * */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + regionId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Region other = (Region) obj;
+		if (regionId != other.regionId)
+			return false;
+		return true;
+	}
+	
 }
