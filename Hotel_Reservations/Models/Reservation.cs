@@ -69,7 +69,7 @@ namespace Reservations
         [RegularExpression(@"^[^;:!@#$%\^*+?\\/<>1234567890]*$", ErrorMessage = @"City should not contain the following characters: ;:!@#$%^*+?\/<>1234567890")]
         public string city { get; set; }
 
-        [Validators.RegionValidation]
+        //[Validators.RegionValidation] don't need it as we have a correct cascading list of regions!
         [Display(Name = "Province/State")]
         public int region { get; set; }
 

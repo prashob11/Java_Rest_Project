@@ -186,13 +186,8 @@ namespace Reservations
         [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
-
-
-            //TODO remove db-related code
-            //Reservation reservation = db.Reservations.Find(id);
-            //db.Reservations.Remove(reservation);
-            //db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
-            //db.SaveChanges();
+            db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == id));
+            db.SaveChanges();
 
             //ws code
             ws.DeleteReservation(id);
@@ -209,41 +204,6 @@ namespace Reservations
             base.Dispose(disposing);
         }
 
-        [HttpPost]
-        public ActionResult GetRegions(string countryId, string regionId)
-        {
-
-            List<SelectListItem> regions = new List<SelectListItem>();
-            int cId = Convert.ToInt32(countryId);
-            int rId = Convert.ToInt32(regionId);
-
-            //select all regions for the given country
-			db.Regions
-	             .Where(r => r.country == cId)
-	             .ToList()
-	             .ForEach(r =>
-	        {
-		         regions.Add(new SelectListItem { Text = r.region1, Value = r.regionId.ToString() });
-	        });
-
-            //if the region is already selected
-            if (regionId != null)
-            {
-                var sr = regions.Where(si => si.Value == regionId); 
-                /* 
-                 * if region with given regionId is in the list 
-                 * then move it in the beginning of the list (for Edit page)
-                 */
-                if (sr.Count() == 1)
-                {
-                    var region = sr.First();
-                    regions.Remove(region);
-                    regions.Insert(0, region);
-                }
-            }
-
-            return Json(regions, JsonRequestBehavior.AllowGet);
-        }
 
         [HttpPost]
         public ActionResult GetCities(string regionId, string prefix)

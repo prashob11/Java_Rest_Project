@@ -88,14 +88,14 @@
             });        
     </script>
 
-
     <script type="text/javascript">
         function getRegions() {
             $.ajax({
-                type: "post",
-                url: "/Reservations/GetRegions",
+                type: "GET",
+                url: "http://127.0.0.1:8080/javarest/Regions/cl",
                 data: { countryId: $('#country').val(), regionId: $('#region').val() },
-                datatype: "json",
+                datatype: "jsonp",
+                crossDomain: true,
                 traditional: true,
                 success: function (data) {
                     var region = "<select id='region'>";
