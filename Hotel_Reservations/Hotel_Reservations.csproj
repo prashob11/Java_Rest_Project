@@ -232,7 +232,7 @@
     <Compile Include="Validators\PostalValidation.cs" />
     <Compile Include="Validators\ReservationDatesValidation.cs" />
     <Compile Include="ws\ReservationsWSClient.cs" />
-    <Compile Include="ws\RoomTypesWSClient.cs" />
+    <Compile Include="ws\RoomTypesWsClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-lumen.css" />

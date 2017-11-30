@@ -8,7 +8,7 @@ using Reservations;
 
 namespace Hotel_Reservations.ws
 {
-    public class RoomTypesWSClient
+    public class RoomTypesWsClient
     {
         private static string GET_ALL_URL = "http://localhost:8080/javarest/RoomType";
         private static string urlParameters = "";
