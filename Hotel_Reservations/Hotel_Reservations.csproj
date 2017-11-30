@@ -231,6 +231,8 @@
     <Compile Include="Validators\NumberOfGuestsValidation.cs" />
     <Compile Include="Validators\PostalValidation.cs" />
     <Compile Include="Validators\ReservationDatesValidation.cs" />
+    <Compile Include="ws\CountriesWsClient.cs" />
+    <Compile Include="ws\RoomTypesWsClient.cs" />
     <Compile Include="ws\CityWSClient.cs" />
     <Compile Include="ws\CreditCardTypeWSClient.cs" />
     <Compile Include="ws\ReservationsWSClient.cs" />
