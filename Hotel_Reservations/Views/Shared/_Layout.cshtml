@@ -88,14 +88,14 @@
             });        
     </script>
 
-
     <script type="text/javascript">
         function getRegions() {
             $.ajax({
-                type: "post",
-                url: "/Reservations/GetRegions",
+                type: "GET",
+                url: "http://127.0.0.1:8080/javarest/Regions/cl",
                 data: { countryId: $('#country').val(), regionId: $('#region').val() },
-                datatype: "json",
+                datatype: "jsonp",
+                crossDomain: true,
                 traditional: true,
                 success: function (data) {
                     var region = "<select id='region'>";
@@ -122,9 +122,10 @@
             $("#city").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: "/Reservations/GetCities",
-                        type: "post",
-                        datatype: "json",
+                        url: "http://127.0.0.1:8080/javarest/Cities/cl",
+                        type: "GET",
+                        datatype: "jsonp",
+                        crossDomain: true,
                         data: { regionId: $('#region').val(), prefix: request.term },
                         success: function (data) {
                             response($.map(data, function (val, item) {

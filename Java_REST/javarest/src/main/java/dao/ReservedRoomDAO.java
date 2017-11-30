@@ -1,5 +1,6 @@
 package dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -9,6 +10,8 @@ import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
 
 import entities.ReservedRoom;
 import utils.HibernateUtil;
@@ -41,6 +44,30 @@ public class ReservedRoomDAO {
 		
 		session.close();		
 		return ReservedRooms;	
+	}
+	
+	public void deleteReservedRooms(int reservationId) {
+		Session session = sf.openSession();
+		Transaction trn = session.beginTransaction();
+
+		List<ReservedRoom> rrl = getReservedRoomsByReservationId(reservationId);
+		
+		rrl.forEach(rr -> session.delete(rr));
+
+		trn.commit();
+		session.close();
+		return;
+	}
+	
+	public Serializable createReservedRoom(ReservedRoom rr) {
+		Session session = sf.openSession();
+		Transaction trn = session.beginTransaction();
+	    
+		Serializable id = session.save(rr);
+
+		trn.commit();
+	    session.close();
+		return id;		
 	}
 
 
