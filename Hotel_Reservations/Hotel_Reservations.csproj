@@ -236,7 +236,8 @@
     <Compile Include="ws\CityWSClient.cs" />
     <Compile Include="ws\CreditCardTypeWSClient.cs" />    <Compile Include="ws\ReservationsWSClient.cs" />
    <Compile Include="ws\WSConfig.cs" /> 
-	<Compile Include="ws\ReservedRoomsWsClient.cs" />   </ItemGroup>
+	<Compile Include="ws\ReservedRoomsWsClient.cs" /> 
+	<Compile Include="ws\RoomWsClient.cs" />	</ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-lumen.css" />
     <Content Include="Content\bootstrap.css" />
