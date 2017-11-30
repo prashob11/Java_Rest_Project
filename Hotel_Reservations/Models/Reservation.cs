@@ -1,5 +1,6 @@
 namespace Reservations
 {
+    using Hotel_Reservations.ws;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -137,10 +138,9 @@ namespace Reservations
         {
             get
             {
-                //TODO replace by ws call
-                ModelReservations db = new ModelReservations();
+                RoomWSClient ws = new RoomWSClient();
                 var reservedRooms = this.ReservedRooms.Select(rr => rr.roomId).ToList();
-                var roomNumbers = db.Rooms.Where(r => reservedRooms.Contains(r.roomId))
+                var roomNumbers = ws.GetAllRooms().Where(r => reservedRooms.Contains(r.roomId))
                     .Select(r => r.roomNumber)
                     .ToList();
 

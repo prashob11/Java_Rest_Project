@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hotel_Reservations.ws;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,12 +15,11 @@ namespace Reservations.Validators
          */
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            ModelReservations m = new ModelReservations();
 
             string creditCardNumber = value.ToString();
             int cctId = Convert.ToInt32(validationContext.ObjectType.GetProperty("CreditCardType").GetValue(validationContext.ObjectInstance, null).ToString());
 
-            var selectedCreditCardType = m.CreditCardTypes.Where(cct => cct.cctId == cctId).First();
+            var selectedCreditCardType = new CreditCardTypeWSClient().GetAllCreditCardTypes().Where(cct => cct.cctId == cctId).First();
             string cardNumberPattern = selectedCreditCardType.cardNumberPattern;
 
             if (Regex.IsMatch(creditCardNumber, cardNumberPattern))
