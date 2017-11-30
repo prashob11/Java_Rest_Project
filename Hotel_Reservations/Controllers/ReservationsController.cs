@@ -204,32 +204,5 @@ namespace Reservations
             base.Dispose(disposing);
         }
 
-
-        [HttpPost]
-        public ActionResult GetCities(string regionId, string prefix)
-        {
-
-            int rId = Convert.ToInt32(regionId);
-            List<string> cities;
-            if (String.IsNullOrEmpty(prefix))
-            {
-                cities = db.Cities
-                    .Where(c => c.region == rId)
-                    .Select(c => c.city1)
-                    .ToList();
-            }
-            else
-            {
-                cities = db.Cities
-                    .Where(c => c.region == rId)
-                    .Select(c => c.city1)
-                    .Where(c => c.ToLower().StartsWith(prefix))
-                    .ToList();
-            }
-
-
-
-            return Json(cities, JsonRequestBehavior.AllowGet);
-        }
     }
 }
