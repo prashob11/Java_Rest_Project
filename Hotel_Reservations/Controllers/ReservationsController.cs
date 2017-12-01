@@ -1,11 +1,8 @@
 ﻿using Hotel_Reservations.ws;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Reservations
@@ -15,6 +12,7 @@ namespace Reservations
         //private ModelReservations db = new ModelReservations();
 
         private ReservationsWSClient ws = new ReservationsWSClient();
+        private ReservedRoomsWSClient rrws = new ReservedRoomsWSClient();
 
         private IEnumerable<Country> countries = new CountriesWsClient().GetAllCountries();
         private IEnumerable<RoomType> roomTypes = new RoomTypesWsClient().GetAllRoomTypes();
@@ -68,14 +66,10 @@ namespace Reservations
         public ActionResult Create([Bind(Include = "reservationId,numberOfGuests,numberOfRooms,roomType,checkin,checkout,firstName,lastName,streetNumber,streetName,city,region,country,postalCode,phoneNumber,emailAddress,nameOnTheCard,CreditCardnumber,CreditCardType,CreditCardExpDate")] Reservation reservation)
         {
             if (ModelState.IsValid)
-            {
-                //db code
-                //db.Reservations.Add(reservation);
-                //db.SaveChanges();
-                //MakeReservations(reservation);
-
+            {         
                 //ws code
                 ws.CreateReservation(reservation);
+                MakeReservations(reservation);
 
                 return RedirectToAction("Index");
 
@@ -120,11 +114,9 @@ namespace Reservations
         {
             if (ModelState.IsValid)
             {
-                //db.Entry(reservation).State = EntityState.Modified;
                 ws.EditReservation(reservation);
-                //db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
-                //db.SaveChanges();
-                //MakeReservations(reservation);
+                rrws.DeleteReservedRooms(reservation.reservationId);
+                MakeReservations(reservation);
                 return RedirectToAction("Index");
             }
             ViewBag.country = new SelectList(countries, "countryId", "country1", reservation.country);
@@ -143,23 +135,23 @@ namespace Reservations
             int roomType = reservation.roomType;
 
             //select rooms that are available
-            //var availableRooms = Validators.ReservationDatesValidation.GetAvailableRooms(db, reservation.checkin, reservation.checkout, roomType, reservationId);
+            var availableRooms = Validators.ReservationDatesValidation.GetAvailableRooms(reservation.checkin, reservation.checkout, roomType, reservationId);
 
 
-            //if (availableRooms.Count() < numberOfRooms)
-            //{
-            //   throw new Exception("No available rooms for these dates");
-            //}
+            if (availableRooms.Count() < numberOfRooms)
+            {
+               throw new Exception("No available rooms for these dates");
+            }
 
             //book available rooms
-            //var are = availableRooms.GetEnumerator();
+            var are = availableRooms.GetEnumerator();
             while (numberOfRooms-- > 0)
             {
                 ReservedRoom rr = new ReservedRoom();
                 rr.reservationId = reservationId;
-            //    are.MoveNext();
-            //    rr.roomId = are.Current;
-            //   db.ReservedRooms.Add(rr);
+                are.MoveNext();
+                rr.roomId = are.Current;
+                rrws.CreateReservedRoom(rr);
             }
 
             //db.SaveChanges();
@@ -188,7 +180,7 @@ namespace Reservations
         [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
-            new ReservedRoomsWSClient().DeleteReservedRooms(id);
+            rrws.DeleteReservedRooms(id);
             ws.DeleteReservation(id);
 
             return RedirectToAction("Index");

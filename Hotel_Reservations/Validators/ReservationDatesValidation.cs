@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
 
 namespace Reservations.Validators
 {
     public class ReservationDatesValidation : ValidationAttribute
     {
+        private IEnumerable<RoomType> roomTypes;
         /*
         * check if:
         * 1) checkout date is after checkin date
@@ -16,10 +16,15 @@ namespace Reservations.Validators
         */
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            ModelReservations m = new ModelReservations();
+
+            if (this.roomTypes == null)
+            {
+                this.roomTypes = new RoomTypesWsClient().GetAllRoomTypes();
+            }
+
             int numberOfRoomsSelected = Convert.ToInt32(validationContext.ObjectType.GetProperty("numberOfRooms").GetValue(validationContext.ObjectInstance, null).ToString());
             int roomTypeSelected = Convert.ToInt32(validationContext.ObjectType.GetProperty("roomType").GetValue(validationContext.ObjectInstance, null).ToString());
-            string roomType = m.RoomTypes.Where(rt => rt.rtId == roomTypeSelected).First().roomType1;
+            string roomType = this.roomTypes.Where(rt => rt.rtId == roomTypeSelected).First().roomType1;
             DateTime checkinSelected = (DateTime)validationContext.ObjectType.GetProperty("checkin").GetValue(validationContext.ObjectInstance, null);
             DateTime checkoutSelected = (DateTime)validationContext.ObjectType.GetProperty("checkout").GetValue(validationContext.ObjectInstance, null);
             int reservationId = (int)validationContext.ObjectType.GetProperty("reservationId").GetValue(validationContext.ObjectInstance, null);
@@ -30,7 +35,7 @@ namespace Reservations.Validators
                 return new ValidationResult("Checkout date should be after checkin date");
             }
 
-            int roomsAvailableCount =  GetAvailableRooms(m, checkinSelected, checkoutSelected, roomTypeSelected, reservationId).Count;
+            int roomsAvailableCount =  GetAvailableRooms(checkinSelected, checkoutSelected, roomTypeSelected, reservationId).Count;
             
 
             if (roomsAvailableCount == 0)
@@ -49,19 +54,18 @@ namespace Reservations.Validators
 
         }
 
-        public static List<int> GetAvailableRooms(ModelReservations db, DateTime checkin, DateTime checkout, int roomType, int reservationId)
+        public static List<int> GetAvailableRooms(DateTime checkin, DateTime checkout, int roomType, int reservationId)
         {
-            ReservationsWSClient ws = new ReservationsWSClient();
             //select rooms that are not available
-            var reservedRooms = from rsv in ws.GetAllReservations()
-                                join rr in db.ReservedRooms on rsv.reservationId equals rr.reservationId
+            var reservedRooms = from rsv in new ReservationsWSClient().GetAllReservations()
+                                join rr in new ReservedRoomsWSClient().GetAllReservedRooms() on rsv.reservationId equals rr.reservationId
                                 where rsv.checkin <= checkout && rsv.checkout >= checkin
                                 && rsv.roomType == roomType
                                 && rsv.reservationId != reservationId
                                 select new { rr.roomId };
 
             //select rooms that are available
-            return db.Rooms.Where(room => room.type == roomType)
+            return  new RoomWSClient().GetAllRooms().Where(room => room.type == roomType)
                 .Select(room => room.roomId).Except(reservedRooms.Select(rr => rr.roomId)).ToList();
 
         }
