@@ -14,8 +14,7 @@ namespace Hotel_Reservations.ws
 {
     public class ReservationsWSClient
     {
-        private static string GET_ALL_URL = "http://localhost:8080/javarest/Reservations";
-        private static string urlParameters = "";
+        private static string GET_ALL_URL = WSConfig.Host + "/javarest/Reservations";
 
         public IEnumerable<Reservation> GetAllReservations()
         {
@@ -25,7 +24,7 @@ namespace Hotel_Reservations.ws
             client.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage response = client.GetAsync(urlParameters).Result; 
+            HttpResponseMessage response = client.GetAsync("").Result; 
             if (response.IsSuccessStatusCode)
             {
                 IEnumerable<Reservation> reservations = response.Content.ReadAsAsync<IEnumerable<Reservation>>().Result;
@@ -71,7 +70,7 @@ namespace Hotel_Reservations.ws
             client.DeleteAsync("/javarest/Reservations/" + id).Wait();
         }
 
-        public void CreateReservation(Reservation r)
+        public int CreateReservation(Reservation r)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(GET_ALL_URL);
@@ -82,7 +81,17 @@ namespace Hotel_Reservations.ws
             var jrRaw = new JavaScriptSerializer().Serialize(r);
             string jr = Regex.Replace(jrRaw, @"""\\/Date\((\d+)\)\\/""", "$1");
             var content = new StringContent(jr.ToString(), Encoding.UTF8, "application/json");
-            client.PostAsync(@"/javarest/Reservations/", content).Wait();
+            HttpResponseMessage resp = client.PostAsync(@"/javarest/Reservations/", content).Result;
+
+            if (resp.IsSuccessStatusCode)
+            {
+                int reservationId = resp.Content.ReadAsAsync<int>().Result;
+                return reservationId;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public void EditReservation(Reservation r)

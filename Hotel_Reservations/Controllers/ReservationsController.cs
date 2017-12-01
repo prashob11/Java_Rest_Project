@@ -68,7 +68,8 @@ namespace Reservations
             if (ModelState.IsValid)
             {         
                 //ws code
-                ws.CreateReservation(reservation);
+                int reservationId = ws.CreateReservation(reservation);
+                reservation.reservationId = reservationId;
                 MakeReservations(reservation);
 
                 return RedirectToAction("Index");
