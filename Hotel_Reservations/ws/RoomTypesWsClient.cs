@@ -10,8 +10,7 @@ namespace Hotel_Reservations.ws
 {
     public class RoomTypesWsClient
     {
-        private static string GET_ALL_URL = "http://localhost:8080/javarest/RoomType";
-        private static string urlParameters = "";
+        private static string GET_ALL_URL = WSConfig.Host + "/javarest/RoomType";
 
         public IEnumerable<RoomType> GetAllRoomTypes()
         {
@@ -21,7 +20,7 @@ namespace Hotel_Reservations.ws
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage response = client.GetAsync(urlParameters).Result;
+            HttpResponseMessage response = client.GetAsync("").Result;
             if (response.IsSuccessStatusCode)
             {
                 IEnumerable<RoomType> roomTypes = response.Content.ReadAsAsync<IEnumerable<RoomType>>().Result;
@@ -35,24 +34,5 @@ namespace Hotel_Reservations.ws
             }
         }
 
-        public RoomType GetRoomType(int id)
-        {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(GET_ALL_URL);
-
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
-            HttpResponseMessage response = client.GetAsync("/javarest/RoomType/" + id).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var rt = response.Content.ReadAsAsync<RoomType>().Result;
-                return rt;
-            }
-            else
-            {
-                return null;
-            }
-        }
     }
 }

@@ -1,21 +1,16 @@
 ﻿using Reservations;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Script.Serialization;
+
 
 namespace Hotel_Reservations.ws
 {
     public class CreditCardTypeWSClient
     {
-        private static string GET_ALL_URL = "http://localhost:8080/javarest/CreditCardType";
-        private static string urlParameters = "";
+        private static string GET_ALL_URL = WSConfig.Host + "/javarest/CreditCardType";
 
         public IEnumerable<CreditCardType> GetAllCreditCardTypes()
         {
@@ -25,7 +20,7 @@ namespace Hotel_Reservations.ws
             client.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage response = client.GetAsync(urlParameters).Result;
+            HttpResponseMessage response = client.GetAsync("").Result;
             if (response.IsSuccessStatusCode)
             {
                 IEnumerable<CreditCardType> CCTypes = response.Content.ReadAsAsync<IEnumerable<CreditCardType>>().Result;
@@ -58,8 +53,6 @@ namespace Hotel_Reservations.ws
                 return null;
             }
         }
-
-
 
     }
 }
