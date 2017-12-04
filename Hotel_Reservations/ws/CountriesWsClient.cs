@@ -10,8 +10,7 @@ namespace Hotel_Reservations.ws
 {
     public class CountriesWsClient
     {
-        private static string GET_ALL_URL = "http://localhost:8080/javarest/Countries";
-        private static string urlParameters = "";
+        private static string GET_ALL_URL = WSConfig.Host + "/javarest/Countries";
 
         public IEnumerable<Country> GetAllCountries()
         {
@@ -21,7 +20,7 @@ namespace Hotel_Reservations.ws
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage response = client.GetAsync(urlParameters).Result;
+            HttpResponseMessage response = client.GetAsync("").Result;
             if (response.IsSuccessStatusCode)
             {
                 IEnumerable<Country> countries = response.Content.ReadAsAsync<IEnumerable<Country>>().Result;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Hotel_Reservations.ws
+﻿namespace Hotel_Reservations.ws
 {
     public class WSConfig
     {
@@ -11,7 +6,7 @@ namespace Hotel_Reservations.ws
         {
             get
             {
-                return "127.0.0.1:8080";
+                return "http://127.0.0.1:8080";
             }
         }
     

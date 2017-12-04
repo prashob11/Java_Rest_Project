@@ -1,21 +1,15 @@
 ﻿using Reservations;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Script.Serialization;
 namespace Hotel_Reservations.ws
 {
     public class RoomWSClient
     {
  
-        private static string GET_ALL_URL = "http://localhost:8080/javarest/Rooms";
-        private static string urlParameters = "";
+        private static string GET_ALL_URL = WSConfig.Host + "/javarest/Rooms";
 
         public IEnumerable<Room> GetAllRooms()
         {
@@ -25,7 +19,7 @@ namespace Hotel_Reservations.ws
             client.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage response = client.GetAsync(urlParameters).Result;
+            HttpResponseMessage response = client.GetAsync("").Result;
             if (response.IsSuccessStatusCode)
             {
                 IEnumerable<Room> room = response.Content.ReadAsAsync<IEnumerable<Room>>().Result;
@@ -38,39 +32,6 @@ namespace Hotel_Reservations.ws
                 return null;
             }
         }
-
-        public Room GetRoom(int id)
-        {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(GET_ALL_URL);
-
-            client.DefaultRequestHeaders.Accept.Add(
-            new MediaTypeWithQualityHeaderValue("application/json"));
-
-            HttpResponseMessage response = client.GetAsync("/javarest/Rooms/" + id).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var r = response.Content.ReadAsAsync<Room>().Result;
-                return r;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-
-        public void DeleteRoom(int id)
-        {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(GET_ALL_URL);
-
-            client.DefaultRequestHeaders.Accept.Add(
-            new MediaTypeWithQualityHeaderValue("application/json"));
-
-            client.DeleteAsync("/javarest/Rooms/" + id).Wait();
-        }
-
-       
+      
     }
 }

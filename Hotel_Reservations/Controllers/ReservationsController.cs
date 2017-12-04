@@ -1,20 +1,22 @@
 ﻿using Hotel_Reservations.ws;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Reservations
 {
     public class ReservationsController : Controller
     {
-        private ModelReservations db = new ModelReservations();
+        //private ModelReservations db = new ModelReservations();
+
         private ReservationsWSClient ws = new ReservationsWSClient();
         private ReservedRoomsWSClient rrws = new ReservedRoomsWSClient();
+
+        private IEnumerable<Country> countries = new CountriesWsClient().GetAllCountries();
+        private IEnumerable<RoomType> roomTypes = new RoomTypesWsClient().GetAllRoomTypes();
+        private IEnumerable<CreditCardType> creditCardTypes = new CreditCardTypeWSClient().GetAllCreditCardTypes();
 
         // GET: Reservations
         [Authorize]
@@ -47,10 +49,10 @@ namespace Reservations
         [Authorize]
         public ActionResult Create()
         {
-            ViewBag.country = new SelectList(db.Countries, "countryId", "country1");
-            ViewBag.CreditCardType = new SelectList(new CreditCardTypeWSClient().GetAllCreditCardTypes(), "cctId", "type");
+            ViewBag.country = new SelectList(countries, "countryId", "country1");
+            ViewBag.CreditCardType = new SelectList(creditCardTypes, "cctId", "type");
             ViewBag.region = new SelectList(new List<Region>(), "regionId", "region1");
-            ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1");
+            ViewBag.roomType = new SelectList(roomTypes, "rtId", "roomType1");
             ViewBag.city = new SelectList(new List<City>(), "cityId", "city1");
             return View();
         }
@@ -64,24 +66,20 @@ namespace Reservations
         public ActionResult Create([Bind(Include = "reservationId,numberOfGuests,numberOfRooms,roomType,checkin,checkout,firstName,lastName,streetNumber,streetName,city,region,country,postalCode,phoneNumber,emailAddress,nameOnTheCard,CreditCardnumber,CreditCardType,CreditCardExpDate")] Reservation reservation)
         {
             if (ModelState.IsValid)
-            {
-                //db code
-                //db.Reservations.Add(reservation);
-                //db.SaveChanges();
-                //MakeReservations(reservation);
-
+            {         
                 //ws code
-                ws.CreateReservation(reservation);
+                int reservationId = ws.CreateReservation(reservation);
+                reservation.reservationId = reservationId;
+                MakeReservations(reservation);
 
                 return RedirectToAction("Index");
 
             }
 
-            ViewBag.country = new SelectList(db.Countries, "countryId", "country1", reservation.country);
-            ViewBag.CreditCardType = new SelectList(new CreditCardTypeWSClient().GetAllCreditCardTypes(), "cctId", "type", reservation.CreditCardType);
+            ViewBag.country = new SelectList(countries, "countryId", "country1", reservation.country);
+            ViewBag.CreditCardType = new SelectList(creditCardTypes, "cctId", "type", reservation.CreditCardType);
             ViewBag.region = new SelectList(new List<Region>() { reservation.Region1 }, "regionId", "region1", reservation.region);
-            ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1", reservation.roomType);
-            //ViewBag.city = new SelectList(new List<City>(), "cityId", "city1", reservation.city);
+            ViewBag.roomType = new SelectList(roomTypes, "rtId", "roomType1", reservation.roomType);
             return View(reservation);
         }
 
@@ -100,11 +98,10 @@ namespace Reservations
             {
                 return HttpNotFound();
             }
-            ViewBag.country = new SelectList(db.Countries, "countryId", "country1", reservation.country);
-            ViewBag.CreditCardType = new SelectList(new CreditCardTypeWSClient().GetAllCreditCardTypes(), "cctId", "type", reservation.CreditCardType);
+            ViewBag.country = new SelectList(countries, "countryId", "country1", reservation.country);
+            ViewBag.CreditCardType = new SelectList(creditCardTypes, "cctId", "type", reservation.CreditCardType);
             ViewBag.region = new SelectList(new List<Region>() { reservation.Region1 }, "regionId", "region1", reservation.region);
-            ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1", reservation.roomType);
-            //ViewBag.city = new SelectList(db.Cities, "cityId", "city1", reservation.city);
+            ViewBag.roomType = new SelectList(roomTypes, "rtId", "roomType1", reservation.roomType);
             return View(reservation);
         }
 
@@ -118,18 +115,16 @@ namespace Reservations
         {
             if (ModelState.IsValid)
             {
-                //db.Entry(reservation).State = EntityState.Modified;
                 ws.EditReservation(reservation);
-                //db.ReservedRooms.RemoveRange(db.ReservedRooms.Where(rr => rr.reservationId == reservation.reservationId));
-                //db.SaveChanges();
-                //MakeReservations(reservation);
+                rrws.DeleteReservedRooms(reservation.reservationId);
+                MakeReservations(reservation);
                 return RedirectToAction("Index");
             }
-            ViewBag.country = new SelectList(db.Countries, "countryId", "country1", reservation.country);
-            ViewBag.CreditCardType = new SelectList(new CreditCardTypeWSClient().GetAllCreditCardTypes(), "cctId", "type", reservation.CreditCardType);
+            ViewBag.country = new SelectList(countries, "countryId", "country1", reservation.country);
+            ViewBag.CreditCardType = new SelectList(creditCardTypes, "cctId", "type", reservation.CreditCardType);
             ViewBag.region = new SelectList(new List<Region>() { reservation.Region1 }, "regionId", "region1", reservation.region);
-            ViewBag.roomType = new SelectList(db.RoomTypes, "rtId", "roomType1", reservation.roomType);
-            //ViewBag.city = new SelectList(db.Cities, "cityId", "city1", reservation.city);
+            ViewBag.roomType = new SelectList(roomTypes, "rtId", "roomType1", reservation.roomType);
+
             return View(reservation);
         }
 
@@ -141,12 +136,12 @@ namespace Reservations
             int roomType = reservation.roomType;
 
             //select rooms that are available
-            var availableRooms = Validators.ReservationDatesValidation.GetAvailableRooms(db, reservation.checkin, reservation.checkout, roomType, reservationId);
+            var availableRooms = Validators.ReservationDatesValidation.GetAvailableRooms(reservation.checkin, reservation.checkout, roomType, reservationId);
 
 
             if (availableRooms.Count() < numberOfRooms)
             {
-                throw new Exception("No available rooms for these dates");
+               throw new Exception("No available rooms for these dates");
             }
 
             //book available rooms
@@ -157,10 +152,10 @@ namespace Reservations
                 rr.reservationId = reservationId;
                 are.MoveNext();
                 rr.roomId = are.Current;
-                db.ReservedRooms.Add(rr);
+                rrws.CreateReservedRoom(rr);
             }
 
-            db.SaveChanges();
+            //db.SaveChanges();
         }
 
         // GET: Reservations/Delete/5
@@ -186,7 +181,6 @@ namespace Reservations
         [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
-
             rrws.DeleteReservedRooms(id);
             ws.DeleteReservation(id);
 
@@ -197,7 +191,7 @@ namespace Reservations
         {
             if (disposing)
             {
-                db.Dispose();
+                //db.Dispose();
             }
             base.Dispose(disposing);
         }
