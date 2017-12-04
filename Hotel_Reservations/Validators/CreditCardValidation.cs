@@ -25,7 +25,7 @@ namespace Reservations.Validators
             string creditCardNumber = value.ToString();
             int cctId = Convert.ToInt32(validationContext.ObjectType.GetProperty("CreditCardType").GetValue(validationContext.ObjectInstance, null).ToString());
 
-            var selectedCreditCardType = this.creditCardTypes.Where(cct => cct.cctId == cctId).First();
+            var selectedCreditCardType = this.creditCardTypes.First(cct => cct.cctId == cctId);
             string cardNumberPattern = selectedCreditCardType.cardNumberPattern;
 
             if (Regex.IsMatch(creditCardNumber, cardNumberPattern))
