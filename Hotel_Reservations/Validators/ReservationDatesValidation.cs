@@ -35,6 +35,11 @@ namespace Reservations.Validators
                 return new ValidationResult("Checkout date should be after checkin date");
             }
 
+            if (checkinSelected < DateTime.Today || checkoutSelected < DateTime.Today)
+            {
+                return new ValidationResult("Checkin & Checkout dates cannot be in the past!");
+            }
+
             int roomsAvailableCount =  GetAvailableRooms(checkinSelected, checkoutSelected, roomTypeSelected, reservationId).Count;
             
 
