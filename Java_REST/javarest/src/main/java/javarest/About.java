@@ -10,7 +10,7 @@ public class About {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String getAbout() {
-		return "Navjot Nikita Prasob Zhengyang: Project 2";
+		return "Navjot Nikita Prashob Zhengyang: Project 2";
 	}
 }
 
