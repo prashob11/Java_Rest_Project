@@ -12,7 +12,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-
 import entities.ReservedRoom;
 import utils.HibernateUtil;
 
@@ -20,55 +19,57 @@ public class ReservedRoomDAO {
 
 	SessionFactory sf = HibernateUtil.getSessionFactory();
 
-	
 	public List<ReservedRoom> getReservedRooms() {
-		Session session = sf.openSession();
-		
-		CriteriaQuery<ReservedRoom> cq = session.getCriteriaBuilder().createQuery(ReservedRoom.class);
-		cq.from(ReservedRoom.class);
-		List<ReservedRoom> ReservedRooms = session.createQuery(cq).getResultList();	
-		
-		session.close();		
-		return ReservedRooms;		
+		try (Session session = sf.openSession()) {
+
+			CriteriaQuery<ReservedRoom> cq = session.getCriteriaBuilder().createQuery(ReservedRoom.class);
+			cq.from(ReservedRoom.class);
+			List<ReservedRoom> ReservedRooms = session.createQuery(cq).getResultList();
+
+			session.close();
+			return ReservedRooms;
+		}
 	}
-	
+
 	public List<ReservedRoom> getReservedRoomsByReservationId(int reservationId) {
-		Session session = sf.openSession();
-		
-		CriteriaBuilder cb = session.getCriteriaBuilder();
-		CriteriaQuery<ReservedRoom> cq = cb.createQuery(ReservedRoom.class);		
-		Root<ReservedRoom> reservedRoomRoot = cq.from(ReservedRoom.class);
-		Predicate predicate = cb.equal(reservedRoomRoot.get("reservationId"), reservationId);
-		cq.where(predicate);		
-	    List<ReservedRoom> ReservedRooms = session.createQuery(cq).getResultList();
-		
-		session.close();		
-		return ReservedRooms;	
+		try (Session session = sf.openSession()) {
+
+			CriteriaBuilder cb = session.getCriteriaBuilder();
+			CriteriaQuery<ReservedRoom> cq = cb.createQuery(ReservedRoom.class);
+			Root<ReservedRoom> reservedRoomRoot = cq.from(ReservedRoom.class);
+			Predicate predicate = cb.equal(reservedRoomRoot.get("reservationId"), reservationId);
+			cq.where(predicate);
+			List<ReservedRoom> ReservedRooms = session.createQuery(cq).getResultList();
+
+			session.close();
+			return ReservedRooms;
+		}
 	}
-	
+
 	public void deleteReservedRooms(int reservationId) {
-		Session session = sf.openSession();
-		Transaction trn = session.beginTransaction();
+		try (Session session = sf.openSession()) {
+			Transaction trn = session.beginTransaction();
 
-		List<ReservedRoom> rrl = getReservedRoomsByReservationId(reservationId);
-		
-		rrl.forEach(rr -> session.delete(rr));
+			List<ReservedRoom> rrl = getReservedRoomsByReservationId(reservationId);
 
-		trn.commit();
-		session.close();
-		return;
+			rrl.forEach(rr -> session.delete(rr));
+
+			trn.commit();
+			session.close();
+			return;
+		}
 	}
-	
+
 	public Serializable createReservedRoom(ReservedRoom rr) {
-		Session session = sf.openSession();
-		Transaction trn = session.beginTransaction();
-	    
-		Serializable id = session.save(rr);
+		try (Session session = sf.openSession()) {
+			Transaction trn = session.beginTransaction();
 
-		trn.commit();
-	    session.close();
-		return id;		
+			Serializable id = session.save(rr);
+
+			trn.commit();
+			session.close();
+			return id;
+		}
 	}
-
 
 }
