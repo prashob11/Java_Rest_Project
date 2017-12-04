@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import dao.CountryDAO;
@@ -18,6 +19,7 @@ import dao.CreditCardDAO;
 import dao.RegionDAO;
 import dao.ReservedRoomDAO;
 import dao.RoomTypeDAO;
+import utils.CustomDateDeserializer;
 import utils.CustomDateSerializer;
 
 @Entity
@@ -151,6 +153,7 @@ public class Reservation {
 		return checkin;
 	}
 
+	@JsonDeserialize(using = CustomDateDeserializer.class)
 	public void setCheckin(Date checkin) {
 		this.checkin = checkin;
 	}
@@ -160,7 +163,7 @@ public class Reservation {
 		return checkout;
 	}
 	
-
+	@JsonDeserialize(using = CustomDateDeserializer.class)
 	public void setCheckout(Date checkout) {
 		this.checkout = checkout;
 	}
@@ -274,7 +277,7 @@ public class Reservation {
 		return creditCardExpDate;
 	}
 	
-
+	@JsonDeserialize(using = CustomDateDeserializer.class)
 	public void setCreditCardExpDate(Date creditCardExpDate) {
 		this.creditCardExpDate = creditCardExpDate;
 	}
